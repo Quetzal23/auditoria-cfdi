@@ -1,3 +1,4 @@
+from inspect import Parameter
 import sqlite3
 
 class Database:
@@ -54,6 +55,6 @@ class Database:
         self.run_query(query, parameters)
     
     def get_empresa(self):
-        query = 'SELECT * FROM parametros_empresa ORDER BY name DESC'
-        row = self.run_query(query)
-        return row
+        query = 'SELECT * FROM parametros_empresa ORDER BY p_nomempresa DESC'
+        db_rows = self.run_query(query)
+        return db_rows

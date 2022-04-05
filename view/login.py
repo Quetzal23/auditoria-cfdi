@@ -16,7 +16,8 @@ class Login:
         
         self.time = self.info.get_cancuntime()
         #
-        self.ip = self.info.get_publicIP()
+        #self.ip = self.info.get_publicIP()
+        self.ip = self.info.get_ipv4()
         self.so = self.info.get_os()
 
         self.intentos = 3
@@ -149,5 +150,5 @@ class Login:
 
         self.db.add_logins(self.time, fail, action, username, self.ip, self.so)
         
-        print(action)
+        #print(action)
 

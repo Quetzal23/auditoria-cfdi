@@ -42,8 +42,9 @@ class Info:
 
         soup = BeautifulSoup(url, 'html.parser')    # Parsering string to HTML
         div_ipv4 = soup.find('h2', id = "ipv4")     # Finding the h2 with the id
+        ipv4 = div_ipv4.string
 
-        return div_ipv4.string
+        return ipv4
 
     def get_hostname(self):
         host = socket.gethostname()
@@ -52,6 +53,21 @@ class Info:
     def get_local(self):
         hostname = self.get_hostname()
         ip = socket.gethostbyname(hostname)
+        return ip
+
+    def get_ipv4(self):
+        try:
+            if self.get_publicIP():
+                ip = self.get_publicIP()
+        except:
+            print('No se encontro una ip publica')
+
+            try:
+                if self.get_local():
+                    ip = self.get_local()
+            except:
+                print('No se encontro una ip local')
+        
         return ip
                 
     def get_localtime(self):

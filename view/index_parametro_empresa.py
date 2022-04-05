@@ -1,3 +1,4 @@
+from sys import maxsize
 from telnetlib import STATUS
 from tkinter import *
 from tkinter.messagebox import *
@@ -9,9 +10,14 @@ class Parametros_Empresas:
     db = Database('auditoria.db')
 
     def __init__(self, window):
+        wind_width  = 808
+        wind_height = 417
+
+        wind_geometry = str(wind_width) + 'x' + str(wind_height)
+
         self.wind = window
         self.wind.title('PARAMETROS DE EMPRESAS')
-        self.wind.geometry('750x412')
+        self.wind.geometry(wind_geometry)   #'750x412'
         self.wind.resizable(0,0)
         self.wind.protocol('WM_DELETE_WINDOW', )
 
@@ -30,7 +36,7 @@ class Parametros_Empresas:
         self.button_new.grid(column=0, row=0, padx=5, pady=5, sticky=W)
         self.button_save = Button(frame_top, text='Save', state='disabled', command=self.entry_save)
         self.button_save.grid(column=1, row=0, padx=5, pady=5, sticky=W)
-        self.button_edit = Button(frame_top, text='Edit', state='disabled')
+        self.button_edit = Button(frame_top, text='Edit', command=self.edit_empresa)    # state='disabled',
         self.button_edit.grid(column=2, row=0, padx=5, pady=5, sticky=W)
         self.button_delete = Button(frame_top, text='Delete', state='disabled')
         self.button_delete.grid(column=3, row=0, padx=5, pady=5, sticky=W)
@@ -47,12 +53,17 @@ class Parametros_Empresas:
         self.treeview = Treeview(frame_left, columns=2, height=16)
         self.treeview.heading("#0", text='', anchor=CENTER)
         self.treeview.heading("#1", text='Empresas', anchor=CENTER)
-        self.treeview.column('#0', stretch=False, width=20)
-        self.treeview.column('#1', stretch=False, width=220)
+        self.treeview.column('#0', stretch=False, width=0, minwidth=0)
+        self.treeview.column('#1', stretch=False, width=300, minwidth=300)    #220
         self.treeview.grid(row=0, column=0, columnspan=2, sticky="nsew")
+        ##
         scrollbar = Scrollbar(frame_left, orient=VERTICAL, command=self.treeview.yview)
         scrollbar.grid(row=0, column=3, sticky="nse")
         self.treeview.configure(yscrollcommand=scrollbar.set)
+        ##
+        sc = Scrollbar(frame_left, orient=HORIZONTAL, command=self.treeview.xview)
+        sc.grid(row=1, column=0, columnspan=2, sticky="ew")
+        self.treeview.configure(xscrollcommand=sc.set)
 
         frame_right = LabelFrame(parametros, relief='flat')
         frame_right.grid(row=1, column=1, padx=0, pady=0, sticky=NSEW)
@@ -149,11 +160,9 @@ class Parametros_Empresas:
         try:
             db_rows = self.db.get_empresa()
             for row in db_rows:
-                #self.treeview.insert()
-                print(row[1])
+                self.treeview.insert('', END, text='', values=(row[1], ))
         except:
             print('TreeView vacio')
-    
 
 
     def entry_new(self):
@@ -201,6 +210,13 @@ class Parametros_Empresas:
         else:
             self.form_warning()
         #
+
+    def edit_empresa(self):
+        try:
+            h = self.treeview.item(self.treeview.selection())['values'][0]
+            #print(h)
+        except:
+            print('9')
 
 
 
