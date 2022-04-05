@@ -9,7 +9,6 @@ class Database:
     def run_query(self, query, parameters=()):
         result = self.cursor.execute(query, parameters)
         self.conn.commit()
-
         return result
 
     def search_user(self, nuser):
@@ -17,7 +16,6 @@ class Database:
         parameters = (nuser,)
         db_rows = self.run_query(query, parameters)
         row = db_rows.fetchall()
-        
         return row
 
     def search_pass(self, passw):
@@ -25,7 +23,6 @@ class Database:
         parameters = (passw,)
         db_rows = self.run_query(query, parameters)
         row = db_rows.fetchall()
-
         return row
 
     
@@ -49,10 +46,14 @@ class Database:
         #print('Close')
         self.conn.close()
 
-    '''
+    
     # Registro de empresas
-    def add_empresa(self, n_empresa, n_corto, rfc):
+    def add_empresa(self, nempresa, ncorto, rfc, patronal, activprin, calle, num, col, mpio, postal, entidad, poblacion, tel):
         query = 'INSERT INTO parametros_empresa VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        parameters = ()
+        parameters = (nempresa, ncorto, rfc, patronal, activprin, calle, num, col, mpio, postal, entidad, poblacion, tel)
         self.run_query(query, parameters)
-    '''
+    
+    def get_empresa(self):
+        query = 'SELECT * FROM parametros_empresa ORDER BY name DESC'
+        row = self.run_query(query)
+        return row

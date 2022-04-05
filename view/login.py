@@ -46,6 +46,7 @@ class Login:
 
         self.username_entry = Entry(self.frame, font=("Arial Bold", 12))
         self.username_entry.grid(column=1, row=0, sticky=E, padx=5, pady=5)
+        self.username_entry.focus()
         # Password [row=1]
         password_label = Label(self.frame, text="CONTRASEÑA:", font=("Arial Bold", 12))
         password_label.grid(column=0, row=1, sticky=W, padx=5, pady=5)  #padx=5, pady=5
