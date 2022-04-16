@@ -4,7 +4,7 @@ from tkinter.ttk import Treeview
 
 #from db import *
 
-from view.index_parametro_empresa import Parametros_Empresas
+#from view.registroEmpresa.parametro_empresa import Parametros_Empresas
 
 class Index:
     #db = Database('auditoria.db')
@@ -35,9 +35,21 @@ class Index:
         filemenu = Menu(menubar, tearoff=0)
         menubar.add_cascade(label='Archivo', menu=filemenu)
         confmenu = Menu(menubar, tearoff=0)
-        confmenu.add_command(label='Configuración ...', command=self.parametros_empresas)   #command=self.parametros_empresas
+        confmenu.add_command(label='Configuración ...',)   #command=self.parametros_empresas
         filemenu.add_cascade(label='Empresas', menu=confmenu)
+
         filemenu.add_command(label='Cerrar Empresa')
+        filemenu.add_command(label='Cambio de Periodo')
+        filemenu.add_separator()
+        filemenu.add_command(label='Contadores Públicos')
+        filemenu.add_command(label='Usuarios')
+        filemenu.add_separator()
+        #filemenu.add_command(label='Utilerias')
+        utilmenu = Menu(menubar, tearoff=0)
+        utilmenu.add_command(label='Exportar Catálogos')
+        utilmenu.add_command(label='Importar Catálogos')
+        filemenu.add_cascade(label='Utilerias', menu=utilmenu)
+
         filemenu.add_separator()
         filemenu.add_command(label="Cerrar Sesión")
         filemenu.add_command(label="Salir", command=wind.quit)
@@ -54,8 +66,7 @@ class Index:
     def parametros_empresas(self):
         toplevel = Toplevel()
         toplevel.grab_set()
-        #toplevel.focus_set()
-        #toplevel.grab_set_global()
-        parametro = Parametros_Empresas(toplevel)
+
+        #parametro = Parametros_Empresas(toplevel)
         
         

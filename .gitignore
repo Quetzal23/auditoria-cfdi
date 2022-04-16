@@ -1,2 +1,7 @@
 /__pycache__
 /view/__pycache__
+/view/acceso/__pycache__
+/view/registroEmpresa/__pycache__
+/view/menuArchivo/__pycache__
+
+/auditoria.db

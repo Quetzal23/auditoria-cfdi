@@ -107,7 +107,7 @@ class Login:
                 '''
 
                 if username != [] and password != []:
-                    self.message_label['text'] = 'INICIANDO SESIÓN'
+                    self.message_label['text'] = 'INICIANDO SESIÓN ...'
                     self.message_label['fg'] = '#009A22'
                     #Guardar Intento Exitoso
                     self.intentos = 3
@@ -126,6 +126,8 @@ class Login:
         time.sleep(0.02)
 
         self.wind.withdraw()
+        
+        time.sleep(0.5)
 
         window = Toplevel()
         index = Index(window)
