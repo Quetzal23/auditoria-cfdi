@@ -5,3 +5,4 @@ Para usar la aplicacion es necesario instalar <strong>Python 3</strong> <br>
 Junto a las librerias:
 - tkinter
 - beautifulsoup4
+- xlrd
