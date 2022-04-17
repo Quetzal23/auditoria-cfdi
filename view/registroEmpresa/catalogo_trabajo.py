@@ -159,16 +159,16 @@ class Catalogo_Centro:
         self.nonotaria_entry.grid(row=6, column=1, sticky=W, padx=2, )
 
     def w_configuracion_general(self, frame):
-        opcion = IntVar()
+        self.opcion = IntVar()
 
         frame_datos = LabelFrame(frame, text='Indique el formato que desee aplicar al No. de Trabajador del Centro', relief='flat')
         frame_datos.grid(row=0, column=0, columnspan=2, sticky=NSEW, pady=10)
 
         frame_radio = LabelFrame(frame_datos, width=80)
         frame_radio.grid(row=1, column=0, rowspan=2, padx=4, pady=2, sticky=NSEW) 
-        self.numerico = Radiobutton(frame_radio, text='Numérico', variable=opcion, value=1, )
+        self.numerico = Radiobutton(frame_radio, text='Numérico', variable=self.opcion, value=1, )
         self.numerico.grid(row=0, column=0, sticky=W)
-        self.alfanumerico = Radiobutton(frame_radio, text='Alfanumérico', variable=opcion, value=2, )
+        self.alfanumerico = Radiobutton(frame_radio, text='Alfanumérico', variable=self.opcion, value=2, )
         self.alfanumerico.grid(row=1, column=0, sticky=W)
 
         longitud = Label(frame_datos, text='Longitud')
