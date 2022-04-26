@@ -1,6 +1,19 @@
 from tkinter import *
+import tkinter as tk
+from tkinter import ttk 
 
-class UpperEntry(Entry):
+class Window_Center(Frame):
+    def __init__(self, master):
+        tk.Frame.__init__(self, master)
+        self.wind = master
+
+    def center(self, wind_width, wind_height):
+        x_wind = self.wind.winfo_screenwidth() // 2 - wind_width // 2
+        y_wind = self.wind.winfo_screenheight() // 2 - wind_height // 2
+        position = str(wind_width) + "x" + str(wind_height) + "+" + str(x_wind) + "+" + str(y_wind)
+        return position
+        
+class UpperEntry(ttk.Entry):
     def __init__(self, parent, *args, **kwargs):
         self._var = kwargs.get("textvariable") or StringVar(parent)
         super().__init__(parent, *args, **kwargs)
@@ -26,8 +39,3 @@ class UpperEntry(Entry):
     def _to_upper(self, *args):
         self._var.set(self._var.get().upper())
 
-
-
-'''
-https://es.stackoverflow.com/questions/356082/como-lograr-poner-may%C3%BAscula-en-los-campos-de-tipo-entry-y-formatear-n%C3%BAmeros-en-p
-'''

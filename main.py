@@ -1,11 +1,10 @@
-from tkinter import *
+from tkinter import Tk
 
-from view.acceso.login import Login
-from view.index import Index
+from views.accesar_sistema.login import Login
+from views.index import Index
 
 if __name__ == '__main__':
     window = Tk()
-    login = Login(window)
-    #index = Index(window)
-
+    #wind = Index(window)
+    ini = Login(window)
     window.mainloop()
