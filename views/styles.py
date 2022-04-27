@@ -14,3 +14,13 @@ class Style:
         self.style.configure("style.Treeview.Heading", font=('Calibri', 13,'bold'))
         self.style.layout(a, [('style.Treeview.treearea', {'sticky': 'nswe'})])
         return a
+
+    def TButton__danger(self):
+        a = "danger.TButton"
+        self.style.configure(a, foreground="#ff0000")
+        return a
+        
+    def TButton__success(self):
+        a = "success.TButton"
+        self.style.configure(a, foreground="#26A042")
+        return a
