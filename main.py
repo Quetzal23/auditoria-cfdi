@@ -5,6 +5,7 @@ from views.index import Index
 
 def main():
     app = Login()
+    #app = Index()
     app.mainloop()
 
 if __name__ == '__main__':

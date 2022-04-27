@@ -1,24 +1,28 @@
-from tkinter import Frame, Menu
+import tkinter as tk
+from tkinter import Menu
 from tkinter.messagebox import showinfo
 
+from views.options import Window_Center
 from views.registro_empresa.parametro_empresa import Parametro_Empresa
 
-class Index(Frame):
-    def __init__(self, master=None):
-        super().__init__(master, width=1000, height=600)
-        self.wind = master
+class Index(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        width=1000
+        height=600
 
-        self.wind.state('zoomed')
-        self.wind.title('AUDITORIA-CFDI *DEMO*')
-        self.wind.protocol("WM_DELETE_WINDOW", self.exit)
-
-        #self.pack()
+        wind = Window_Center(self)
+        self.title('AUDITORIA-CFDI *DEMO*')
+        self.geometry(wind.center(width, height))
+        self.state('zoomed')
+        self.protocol("WM_DELETE_WINDOW", self.exit)
+        
         self.create_widgets()
 
     def exit(self):
-        self.wind.destroy()
-        self.wind.quit()
-    
+        self.destroy()
+        self.quit()
+
     def about(self):
         showinfo('Acerca de...', 
             'Sistema de auditoria para determinar las cuotas obrero patronales')
@@ -27,8 +31,8 @@ class Index(Frame):
         self.menu_bar()
         
     def menu_bar(self):
-        menubar = Menu(self.wind)
-        self.wind.config(menu=menubar)
+        menubar = Menu(self)
+        self.config(menu=menubar)
         
         filemenu = Menu(menubar, tearoff=0)
         editionmenu = Menu(menubar, tearoff=0)
@@ -80,4 +84,4 @@ class Index(Frame):
         parametro_empresa = Parametro_Empresa(self)
         parametro_empresa.grab_set()
         parametro_empresa.focus_force()
-        
+    

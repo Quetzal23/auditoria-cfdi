@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import E, EW, NSEW, W, Label, LabelFrame, PhotoImage, StringVar
+from tkinter import EW, NSEW, W, Label, LabelFrame, PhotoImage, StringVar
 from tkinter import ttk
+from db.login_db import Login_DB
 
 from views.options import Window_Center
 from views.styles import Style
@@ -40,21 +41,25 @@ class Login(tk.Tk):
         frame = LabelFrame(self, relief='flat')
         frame.grid(row=0, column=0, sticky=NSEW, padx=12, pady=12, ipadx=8, ipady=8)
 
-        icon_label_1 = Label(frame, text='1', image=self.img1)
-        icon_label_1.grid(row=0, column=0, sticky=NSEW, rowspan=2)
-        icon_label_2 = Label(frame, text='2', image=self.img2)
-        icon_label_2.grid(row=2, column=0, sticky=NSEW, rowspan=2)
+        self.icon_label_1 = Label(frame, text='1', image=self.img1)
+        self.icon_label_1.grid(row=0, column=0, sticky=NSEW, rowspan=2)
+        self.icon_label_2 = Label(frame, text='2', image=self.img2)
+        self.icon_label_2.grid(row=2, column=0, sticky=NSEW, rowspan=2)
 
         user_label = Label(frame, text='Usuario', font=("Arial Bold", 12, 'bold'))
         user_label.grid(row=0, column=1, sticky=W, padx=2)
-        user_entry = ttk.Entry(frame, font=("Arial Bold", 12), width=30, textvariable=self.var_user)
-        user_entry.grid(row=1, column=1, sticky=W, columnspan=2)
+        self.user_label = Label(frame, bg='black')
+        self.user_label.grid(row=1, column=1, sticky=NSEW, columnspan=2)
+        user_entry = ttk.Entry(self.user_label, font=("Arial Bold", 12), width=30, textvariable=self.var_user)
+        user_entry.grid(row=0, column=0, sticky=W)
         user_entry.focus()
 
         pass_label = Label(frame, text='Contraseña', font=("Arial Bold", 12, 'bold'))
         pass_label.grid(row=2, column=1, sticky=W, padx=2)
-        pass_entry = ttk.Entry(frame, show='*', font=("Arial Bold", 12), width=30, textvariable=self.var_pass)
-        pass_entry.grid(row=3, column=1, sticky=W, columnspan=2)
+        self.pass_label = Label(frame, bg='black')
+        self.pass_label.grid(row=3, column=1, sticky=NSEW, columnspan=2)
+        pass_entry = ttk.Entry(self.pass_label, show='*', font=("Arial Bold", 12), width=30, textvariable=self.var_pass)
+        pass_entry.grid(row=0, column=0, sticky=W)
 
         btn_accept = ttk.Button(frame, text='Aceptar', style=self.button_success(), command=self.get_user)
         btn_accept.grid(row=4, column=1, padx=4, pady=10, ipady=2, sticky=EW)
@@ -77,13 +82,54 @@ class Login(tk.Tk):
         usern = self.var_user.get()
         passw = self.var_pass.get()
 
-        #print(usern)
+        
         if self.inputs_login():
-            print('Hola')
+            db = Login_DB()
+            self.create_icon()
+
+            username = db.search_user(usern)
+            password = db.search_pass(passw)
+
+            self.icon_label_1['image']=self.img1
+            self.icon_label_2['image']=self.img2
+
+            if username == [] and password == []:
+                self.msg_label['text'] = 'USUARIO Y/O CONTRASEÑA INCORRECTOS'
+                self.msg_label['fg'] = '#D70F21'
+                
+                self.user_label.config(bg='red')
+                self.pass_label.config(bg='red')
+            else:
+                if username == []:
+                    self.msg_label['text'] = 'USUARIO INCORRECTO'
+                    self.msg_label['fg'] = '#D70F21'
+                    
+                    self.user_label.config(bg='red')
+                    self.pass_label.config(bg='#009A22')
+
+                if password == []:
+                    self.msg_label['text'] = 'CONTRASEÑA INCORRECTA'
+                    self.msg_label['fg'] = '#D70F21'
+
+                    self.user_label.config(bg='#009A22')
+                    self.pass_label.config(bg='red')
+
+                if username != [] and password != []:
+                    self.msg_label['text'] = 'INICIANDO SESIÓN...'
+                    self.msg_label['fg'] = '#009A22'
+
+                    self.icon_label_1['image']=self.img1
+                    self.icon_label_2['image']=self.img3
+
+                    self.user_label.config(bg='#009A22')
+                    self.pass_label.config(bg='#009A22')
         else:
             self.msg_label['text'] = 'LLENE TODAS LAS CASILLAS'
             self.msg_label['fg'] = '#D70F21'
 
+            self.user_label.config(bg='red')
+            self.pass_label.config(bg='red')
+        
 
     def button_success(self):
         style = Style()
