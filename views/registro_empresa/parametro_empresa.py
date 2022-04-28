@@ -25,6 +25,7 @@ class Parametro_Empresa(tk.Toplevel):
 
     def on_closing(self):
         self.destroy()
+        self.quit()
 
     def create_widgets(self):
         self.frame_top()

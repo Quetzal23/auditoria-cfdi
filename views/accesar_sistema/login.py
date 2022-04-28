@@ -6,11 +6,13 @@ from db.login_db import Login_DB
 from views.options import Window_Center
 from views.styles import Style
 
+from views.index import Index
+
 class Login(tk.Tk):
     def __init__(self):
         super().__init__()
         width=372
-        height=234
+        height=220
         
         wind = Window_Center(self)
 
@@ -32,8 +34,6 @@ class Login(tk.Tk):
 
     def create_widgets(self):
         self.create_icon()
-
-        intentos = 3
 
         self.var_user = StringVar()
         self.var_pass = StringVar()
@@ -67,10 +67,10 @@ class Login(tk.Tk):
         btn_cancel = ttk.Button(frame, text='Cancelar', style=self.button_danger(), command=self.exit)
         btn_cancel.grid(row=4, column=2, padx=4, pady=10, ipady=2, sticky=EW)
 
-        self.intentos_label = Label(frame, text='Intentos: %s' % intentos, font=("Arial Bold", 8, 'bold'))
+        self.intentos_label = Label(frame, font=("Arial Bold", 8, 'bold'))
         self.intentos_label.grid(row=5, column=1, sticky=W, columnspan=2)
 
-        self.msg_label = Label(frame, text='')
+        self.msg_label = Label(frame, text='', font=("Arial Bold", 10, 'bold'))
         self.msg_label.grid(row=6, column=1, sticky=W, columnspan=2)
 
     def inputs_login(self):
@@ -81,56 +81,93 @@ class Login(tk.Tk):
 
         usern = self.var_user.get()
         passw = self.var_pass.get()
-
         
         if self.inputs_login():
-            db = Login_DB()
             self.create_icon()
-
-            username = db.search_user(usern)
-            password = db.search_pass(passw)
+            db = Login_DB()
 
             self.icon_label_1['image']=self.img1
             self.icon_label_2['image']=self.img2
+            
+            # BD
+            username = db.search_user(usern)
+            password = db.search_pass(passw)
 
             if username == [] and password == []:
-                self.msg_label['text'] = 'USUARIO Y/O CONTRASEÑA INCORRECTOS'
+                self.msg_label['text'] = 'Los datos son incorrectos'
                 self.msg_label['fg'] = '#D70F21'
                 
                 self.user_label.config(bg='red')
                 self.pass_label.config(bg='red')
             else:
                 if username == []:
-                    self.msg_label['text'] = 'USUARIO INCORRECTO'
+                    self.msg_label['text'] = 'El usuario es incorrecto'
                     self.msg_label['fg'] = '#D70F21'
                     
                     self.user_label.config(bg='red')
-                    self.pass_label.config(bg='#009A22')
 
                 if password == []:
-                    self.msg_label['text'] = 'CONTRASEÑA INCORRECTA'
+                    self.msg_label['text'] = 'La contraseña es incorrecta'
                     self.msg_label['fg'] = '#D70F21'
 
-                    self.user_label.config(bg='#009A22')
                     self.pass_label.config(bg='red')
 
                 if username != [] and password != []:
-                    self.msg_label['text'] = 'INICIANDO SESIÓN...'
+                    id_user = self.id_user(username)
+
+                    try:
+                        if self.id_roles_user(username) == 1:
+                            self.update()
+                            self.withdraw()
+
+                            app = Index(id_user)
+
+                        if self.id_roles_user(username) == 2:
+                            print('Super')
+
+                        if self.id_roles_user(username) == 3:
+                            print('Operador')
+                    except:
+                        print('HAHA')
+
+                    self.msg_label['text'] = 'Iniciando sesión...'
                     self.msg_label['fg'] = '#009A22'
 
-                    self.icon_label_1['image']=self.img1
                     self.icon_label_2['image']=self.img3
 
                     self.user_label.config(bg='#009A22')
-                    self.pass_label.config(bg='#009A22')
+                    self.pass_label.config(bg='#009A22')    
+
         else:
-            self.msg_label['text'] = 'LLENE TODAS LAS CASILLAS'
+            self.msg_label['text'] = 'Completa los campos'
             self.msg_label['fg'] = '#D70F21'
 
             self.user_label.config(bg='red')
             self.pass_label.config(bg='red')
-        
 
+            if len(usern):
+                self.user_label.config(bg='black')
+                self.pass_label.config(bg='red')
+            
+            if len(passw):
+                self.user_label.config(bg='red')
+                self.pass_label.config(bg='black')
+        
+        self.var_pass.set('')
+
+    def id_user(self, db_row):
+        for row in db_row:
+            id = row[0]
+            return id
+
+    def id_roles_user(self, db_row):
+        for row in db_row:
+            idrol = row[3]
+            return idrol
+
+    def get_id(self):
+        pass    
+            
     def button_success(self):
         style = Style()
         b = style.TButton__success()

@@ -6,8 +6,10 @@ from views.options import Window_Center
 from views.registro_empresa.parametro_empresa import Parametro_Empresa
 
 class Index(tk.Tk):
-    def __init__(self):
+    def __init__(self, id):
         super().__init__()
+        self.id_user = id
+
         width=1000
         height=600
 
@@ -84,4 +86,4 @@ class Index(tk.Tk):
         parametro_empresa = Parametro_Empresa(self)
         parametro_empresa.grab_set()
         parametro_empresa.focus_force()
-    
+        parametro_empresa.mainloop()    
