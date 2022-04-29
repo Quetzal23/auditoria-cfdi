@@ -1,14 +1,18 @@
 import tkinter as tk
-from tkinter import Menu
+from tkinter import LEFT, RIGHT, Label, LabelFrame, Menu
 from tkinter.messagebox import showinfo
+import time
 
-from views.options import Window_Center
+from db.login_db import Login_DB
+
+from views.options import Info_System, Window_Center
 from views.registro_empresa.parametro_empresa import Parametro_Empresa
 
 class Index(tk.Tk):
-    def __init__(self, id):
+    def __init__(self, id_user, id_nivel=()):
         super().__init__()
-        self.id_user = id
+        self.id_user = id_user   #id usuario
+        self.id_rol = id_nivel
 
         width=1000
         height=600
@@ -29,9 +33,37 @@ class Index(tk.Tk):
         showinfo('Acerca de...', 
             'Sistema de auditoria para determinar las cuotas obrero patronales')
 
-    def create_widgets(self):
-        self.menu_bar()
+    def connection_db(self):
+        self.db = Login_DB()
+
+        var_user = self.id_user
+        var_rol = self.id_rol
         
+        user_row = self.db.exists_user(var_user, var_rol)
+        #print(user_row)
+        if user_row == []:
+            print('Vacio')
+        else:
+            for row in user_row:
+                self.nomuser = row[1]
+                idrol = row[3]
+
+            if idrol == 1:
+                self.rol = 'Administrador'
+            
+            if idrol == 2:
+                self.rol = 'Supervisor'
+        
+            if idrol == 3:
+                self.rol = 'Operador'
+
+    def create_widgets(self):
+        self.connection_db()
+        self.menu_bar()
+        self.header()
+        self.content()
+        self.footer()
+    
     def menu_bar(self):
         menubar = Menu(self)
         self.config(menu=menubar)
@@ -86,4 +118,34 @@ class Index(tk.Tk):
         parametro_empresa = Parametro_Empresa(self)
         parametro_empresa.grab_set()
         parametro_empresa.focus_force()
-        parametro_empresa.mainloop()    
+        parametro_empresa.mainloop()
+
+    
+    def header(self):
+        header_frame = LabelFrame(self, bg='green', height=30)
+        header_frame.pack(fill='both')
+    
+    def content(self):
+        content_frame = tk.Frame(self, bg='red')
+        content_frame.pack(fill='both')
+
+    def footer(self):
+        footer_frame = LabelFrame(self, height=30)
+        footer_frame.pack(fill='both', side='bottom')
+
+        user_label = Label(footer_frame, text='Usuario Actual: %s' % self.nomuser, width=30, anchor='w')
+        user_label.pack(side=LEFT, padx=5, pady=5)
+
+        nivel_label = Label(footer_frame, text='Usuario Actual: %s' % self.rol, width=24, anchor='w')
+        nivel_label.pack(side=LEFT, padx=5, pady=5)
+
+        self.hour_label = Label(footer_frame, width=6, anchor='w')
+        self.hour_label.pack(side=RIGHT, padx=5, pady=5)
+        self.times()
+
+        self.mainloop()
+    
+    def times(self):
+        current_time=time.strftime("%H:%M:%S") 
+        self.hour_label.config(text=current_time)
+        self.hour_label.after(200, self.times)

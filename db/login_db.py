@@ -1,5 +1,3 @@
-import sqlite3
-
 from db.connection import Connection
 
 class Login_DB:
@@ -19,3 +17,13 @@ class Login_DB:
         db_rows = self.db.run_query(query, parameters)
         row = db_rows.fetchall()
         return row
+
+    def exists_user(self, id_user, id_rol):
+        query = 'SELECT * FROM au_users WHERE id_user=? AND roles_users_id_roles=?'
+        parameters = (id_user, id_rol)
+        db_rows = self.db.run_query(query, parameters)
+        row = db_rows.fetchall()
+        return row
+
+    def close(self):
+        self.db.cursor.close()
