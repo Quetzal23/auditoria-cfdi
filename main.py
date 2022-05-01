@@ -1,12 +1,16 @@
+from tkinter import *
 import tkinter as tk
 
-from views.accesar_sistema.login import Login
-from views.index import Index
+from controller.LoginController import LoginController
+from model.LoginModel import LoginModel
+from view.acceso.LoginView import LoginView
 
-def main():
-    #app = Login()
-    app = Index(1, 1)
-    app.mainloop()
+def login():
+    view = LoginView(root)
+    model = LoginModel()
+    controller = LoginController(model, view)
+    root.mainloop()
 
 if __name__ == '__main__':
-    main()
+    root = Tk()
+    login()

@@ -1,8 +1,8 @@
-from db.connection import Connection
+from model.Database import Database
 
-class Login_DB:
+class LoginModel():
     def __init__(self):
-        self.db = Connection()
+        self.db = Database()
 
     def search_user(self, nuser):
         query = 'SELECT * FROM au_users WHERE username_user=?'
@@ -27,3 +27,14 @@ class Login_DB:
 
     def close(self):
         self.db.cursor.close()
+
+'''
+m = Login_DB()
+
+query = 'SELECT * FROM au_roles_users WHERE name_rol=?'
+parameters = ('Administrador',)
+
+db_query = m.run_query(query, parameters)
+row = db_query.fetchall()
+print(row)
+'''

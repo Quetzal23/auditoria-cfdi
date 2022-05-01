@@ -1,8 +1,8 @@
 import sqlite3
 
-class Connection:
+class Database:
     def __init__(self):
-        db_name = 'auditoria.db'
+        db_name = 'db-dump/auditoria-cfdi.db'
         with sqlite3.connect(db_name) as self.conn:
             self.cursor = self.conn.cursor() 
 

@@ -1,4 +1,9 @@
-auditoria.db
-
-/db/__pycache__
-/views/
+assets/__pycache__
+controller/__pycache__
+controller/Contoller.py
+db-dump/books.db
+model/__pycache__
+model/Model.py
+view/__pycache__
+view/View.py
+view/acceso/__pycache__
