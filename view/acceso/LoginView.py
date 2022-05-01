@@ -13,6 +13,7 @@ class LoginView:
     def __init__(self, root):
         super().__init__()
         self.root = root
+        
         width=372
         height=220
         
@@ -20,7 +21,7 @@ class LoginView:
 
         self.root.title('INICIO DE SESIÓN DE USUARIO')
         self.root.geometry(wind.center(width, height))
-        self.root.resizable(0,0)
+        self.root.resizable(0, 0)
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
 
         self.create_widgets()

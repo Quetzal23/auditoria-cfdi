@@ -1,5 +1,7 @@
 from tkinter import *
 
+import route 
+
 class LoginController:
     intentos = 0
     total_intento = 3
@@ -129,7 +131,12 @@ class LoginController:
         id_user = self.id_user(username)
         id_rol = self.id_roles_user(username)
 
-        print(id_user)
-        print(id_rol)
+        '''print(id_user)
+        print(id_rol)'''
+
+        self.view.root.update()
+        self.view.root.withdraw()
+
+        route.index(id_user, id_rol)
         
         self.model.close()

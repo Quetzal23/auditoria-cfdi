@@ -1,16 +1,5 @@
-from tkinter import *
-import tkinter as tk
-
-from controller.LoginController import LoginController
-from model.LoginModel import LoginModel
-from view.acceso.LoginView import LoginView
-
-def login():
-    view = LoginView(root)
-    model = LoginModel()
-    controller = LoginController(model, view)
-    root.mainloop()
+import route 
 
 if __name__ == '__main__':
-    root = Tk()
-    login()
+    #route.login()
+    route.index(1, 1)
