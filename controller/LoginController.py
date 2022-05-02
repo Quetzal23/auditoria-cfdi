@@ -83,7 +83,7 @@ class LoginController:
                 self.view.user_label.config(bg='red')
                 self.view.pass_label.config(bg='#849797')
 
-            self.intentos = self.intentos + 1
+            #self.intentos = self.intentos + 1
             self.view.intentos_label['text'] = 'Intentos: 3'
         
         self.view.intentos_label['text'] = 'Intentos: %s' % self.total_intento
@@ -136,7 +136,7 @@ class LoginController:
 
         self.view.root.update()
         self.view.root.withdraw()
-
-        route.index(id_user, id_rol)
         
         self.model.close()
+
+        route.index(id_user, id_rol)

@@ -8,6 +8,10 @@ from controller.IndexController import IndexController
 from model.IndexModel import IndexModel
 from view.IndexView import IndexView
 
+from controller.ParametroController import ParametroController
+from model.ParametroModel import ParametroModel
+from view.altaempresa.ParametroView import ParametroView
+
 def login():
     root = Tk()
     view = LoginView(root)
@@ -21,3 +25,9 @@ def index(id_user, id_rol=()):
     model = IndexModel()
     controller = IndexController(model, view)
     root.mainloop() # Eliminar despues de acabar con las pruebas
+
+def parametro_empresas():
+    root = Toplevel()
+    view = ParametroView(root)
+    model = ParametroModel()
+    controller = ParametroController(model, view)

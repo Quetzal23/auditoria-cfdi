@@ -5,6 +5,8 @@ from tkinter.messagebox import showinfo
 
 from assets.options import Window_Center
 
+import route
+
 class IndexView:
     def exit(self):
         self.root.destroy()
@@ -82,7 +84,7 @@ class IndexView:
         filemenu.add_command(label='Cerrar Sesión')
         filemenu.add_command(label='Salir', command=exit)
 
-        file_conf.add_command(label='Configuración...')
+        file_conf.add_command(label='Configuración...', command=self.menu_conf__config)
         file_props.add_command(label='')
         file_config.add_command(label='')
 
@@ -115,3 +117,6 @@ class IndexView:
         current_time = time.strftime("%H:%M:%S") 
         self.hour_label.config(text=current_time)
         self.hour_label.after(200, self.times)
+
+    def menu_conf__config(self):
+        route.parametro_empresas()
