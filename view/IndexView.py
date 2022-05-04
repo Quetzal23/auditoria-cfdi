@@ -95,8 +95,8 @@ class IndexView:
         header_frame.pack(fill='both')
 
     def content(self):
-        content_frame = tk.Frame(self.root, bg='red')
-        content_frame.pack(fill='both')
+        content_frame = LabelFrame(self.root)
+        content_frame.pack(fill='both', expand=True)
 
     def footer(self):
         footer_frame = LabelFrame(self.root, height=30)

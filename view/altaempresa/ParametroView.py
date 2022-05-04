@@ -1,4 +1,6 @@
-from tkinter import CENTER, E, EW, HORIZONTAL, LEFT, NO, NSEW, RIGHT, VERTICAL, W, Label, LabelFrame, PhotoImage
+from cProfile import label
+from re import S
+from tkinter import CENTER, E, EW, HORIZONTAL, LEFT, N, NO, NSEW, RIGHT, VERTICAL, W, Entry, Label, LabelFrame, PhotoImage, StringVar
 from tkinter import ttk
 import tkinter as tk
 
@@ -13,8 +15,8 @@ class ParametroView():
         super().__init__()
         self.root = root
 
-        wind_width  = 910#900
-        wind_height = 400#390
+        wind_width  = 898#900
+        wind_height = 410#390
 
         wind = Window_Center(self.root)
         self.style = Style()
@@ -26,10 +28,9 @@ class ParametroView():
         self.root.title('PARAMETROS DE EMPRESAS')
         self.root.resizable(0, 0)
         self.root.protocol('WM_DELETE_WINDOW', self.on_closing)
-
+        
         self.create_widgets()
-
-        #self.root.mainloop()
+        
 
     def create_icon(self):
         self.img1 = self.image_button(PhotoImage(file='assets/images/button/draft_FILL0_wght400_GRAD0_opsz48.png'))
@@ -71,7 +72,7 @@ class ParametroView():
         self.btn_exit.pack(side=RIGHT, padx=4, pady=4,)
 
     def frame_left(self):
-        frame_left = LabelFrame(self.root, relief='flat')
+        frame_left = LabelFrame(self.root, bg='#849797', relief='flat')
         frame_left.grid(row=1, column=0, sticky=NSEW, padx=6)
 
         self.treeview = ttk.Treeview(frame_left, height=15, style=self.style.Treeview())
@@ -103,40 +104,44 @@ class ParametroView():
         self.disabled_entry()
 
     def datos_generales(self, labelframe):
-        frame = LabelFrame(labelframe, text='Datos Generales', relief='flat', fg='blue', font='bold')
+        frame = LabelFrame(labelframe, text='Datos Generales', fg='blue', relief='flat')
         frame.grid(row=0, column=0, sticky=NSEW, padx=6)
+        
+        _label_1 = Label(frame, text='Nombre de Empresa', anchor='w')
+        _label_2 = Label(frame, text='Nombre corto', width=24, anchor='w')
+        _label_3 = Label(frame, text='RFC', width=24, anchor='w')
+        _label_4 = Label(frame, text='# Registro Patronal', width=24, anchor='w')
+        _label_5 = Label(frame, text='Datos Generales', anchor='w')
 
-        nomEmpresa_label = Label(frame, text='Nombre de Empresa')
-        self.lbl1 = Label(frame, bg='#849797',)
-        self.nomEmp_entry = UpperEntry(self.lbl1)
-
-        nomCorto_label = Label(frame, text='Nombre corto')
+        self.lbl1 = Label(frame, bg='#849797')
         self.lbl2 = Label(frame, bg='#849797')
-        self.nomCorto_entry = UpperEntry(self.lbl2, width=28)
-
-        rfc_label = Label(frame, text='RFC')
         self.lbl3 = Label(frame, bg='#849797')
-        self.rfc_entry = UpperEntry(self.lbl3, width=28)
-
-        noPatronal_label = Label(frame, text='# Registro Patronal')
         self.lbl4 = Label(frame, bg='#849797')
-        self.noPatrl_entry = UpperEntry(self.lbl4, width=28)
-
-        actividadP_label = Label(frame, text='Datos Generales')
         self.lbl5 = Label(frame, bg='#849797')
-        self.actPpal_entry = UpperEntry(self.lbl5)
-        
-        nomEmpresa_label.grid(row=1, column=0, sticky=W, padx=2)
-        nomCorto_label.grid(row=3, column=0, sticky=W, padx=2)
-        rfc_label.grid(row=3, column=1, sticky=W, padx=2)
-        noPatronal_label.grid(row=3, column=2, sticky=W, padx=2)
-        actividadP_label.grid(row=5, column=0, sticky=W, padx=2)
-        
-        self.lbl1.grid(row=2, column=0, sticky=EW, padx=2, columnspan=3)
-        self.lbl2.grid(row=4, column=0, sticky=W, padx=2)
-        self.lbl3.grid(row=4, column=1, sticky=W, padx=2)
-        self.lbl4.grid(row=4, column=2, sticky=W, padx=2)
-        self.lbl5.grid(row=6, column=0, sticky=EW, padx=2, columnspan=3)
+
+        self.var1 = StringVar()
+        self.var2 = StringVar()
+        self.var3 = StringVar()
+        self.var4 = StringVar()
+        self.var5 = StringVar()
+
+        self.nomEmp_entry = UpperEntry(self.lbl1, textvariable=self.var1)
+        self.nomCorto_entry = UpperEntry(self.lbl2, textvariable=self.var2)
+        self.rfc_entry = UpperEntry(self.lbl3, textvariable=self.var3)
+        self.noPatrl_entry = UpperEntry(self.lbl4, textvariable=self.var4)
+        self.actPpal_entry = UpperEntry(self.lbl5, textvariable=self.var5)
+
+        _label_1.grid(row=0, column=0, columnspan=3, sticky=EW, padx=2)
+        _label_2.grid(row=2, column=0, sticky=EW, padx=2)
+        _label_3.grid(row=2, column=1, sticky=EW, padx=2)
+        _label_4.grid(row=2, column=2, sticky=EW, padx=2)
+        _label_5.grid(row=4, column=0, columnspan=3, sticky=EW, padx=2)
+
+        self.lbl1.grid(row=1, column=0, columnspan=3, sticky=NSEW, padx=2)
+        self.lbl2.grid(row=3, column=0, sticky=NSEW, padx=2)
+        self.lbl3.grid(row=3, column=1, sticky=NSEW, padx=2)
+        self.lbl4.grid(row=3, column=2, sticky=NSEW, padx=2)
+        self.lbl5.grid(row=5, column=0, columnspan=3, sticky=NSEW, padx=2)
 
         self.nomEmp_entry.pack(fill='both')
         self.nomCorto_entry.pack(fill='both')
@@ -145,53 +150,57 @@ class ParametroView():
         self.actPpal_entry.pack(fill='both')
     
     def direccion(self, labelframe):
-        frame = LabelFrame(labelframe, text='Dirección', relief='flat', fg='blue', font='bold')
+        frame = LabelFrame(labelframe, text='Dirección', fg='blue', relief='flat')
         frame.grid(row=2, column=0, sticky=NSEW, padx=6)
 
-        calle_label = Label(frame, text='Calle')
-        self.lbl6 = Label(frame, bg='#849797',)
-        self.calle_entry = UpperEntry(self.lbl6, width=28)
+        _label_6 = Label(frame, text='Calle', width=24, anchor='w')
+        _label_7 = Label(frame, text='Número', width=24, anchor='w')
+        _label_8 = Label(frame, text='Colonia', width=24, anchor='w')
+        _label_9 = Label(frame, text='Delegación o Municipio', width=24, anchor='w')
+        _label_10 = Label(frame, text='Código Postal', width=24, anchor='w')
+        _label_11 = Label(frame, text='Entidad Federativa', width=24, anchor='w')
+        _label_12 = Label(frame, text='Población', width=24, anchor='w')
+        _label_13 = Label(frame, text='Teléfono(s)', width=24, anchor='w')
 
-        num_label = Label(frame, text='Número')
-        self.lbl7 = Label(frame, bg='#849797',)
-        self.num_entry = UpperEntry(self.lbl7, width=28)
+        self.lbl6 = Label(frame, bg='#849797')
+        self.lbl7 = Label(frame, bg='#849797')
+        self.lbl8 = Label(frame, bg='#849797')
+        self.lbl9 = Label(frame, bg='#849797')
+        self.lbl10 = Label(frame, bg='#849797')
+        self.lbl11 = Label(frame, bg='#849797')
+        self.lbl12 = Label(frame, bg='#849797')
+        self.lbl13 = Label(frame, bg='#849797')
+        
+        self.var6 = StringVar()
+        self.var7 = StringVar()
+        self.var8 = StringVar()
+        self.var9 = StringVar()
+        self.var10 = StringVar()
+        self.var11 = StringVar()
+        self.var12 = StringVar()
+        self.var13 = StringVar()
 
-        col_label = Label(frame, text='Colonia')
-        self.lbl8 = Label(frame, bg='#849797',)
-        self.col_entry = UpperEntry(self.lbl8, width=28)
+        self.calle_entry = UpperEntry(self.lbl6, textvariable=self.var6)
+        self.num_entry = UpperEntry(self.lbl7, textvariable=self.var7)
+        self.col_entry = UpperEntry(self.lbl8, textvariable=self.var8)
+        self.mpio_entry = UpperEntry(self.lbl9, textvariable=self.var9)
+        self.cp_entry = ttk.Entry(self.lbl10, textvariable=self.var10, validate="key")
+        self.entFed_entry = UpperEntry(self.lbl11, textvariable=self.var11)
+        self.pob_entry = UpperEntry(self.lbl12, textvariable=self.var12)
+        self.tel_entry = UpperEntry(self.lbl13, textvariable=self.var13)
 
-        mpio_label = Label(frame, text='Delegación o Municipio')
-        self.lbl9 = Label(frame, bg='#849797',)
-        self.mpio_entry = UpperEntry(self.lbl9, width=28)
-
-        cp_label = Label(frame, text='Código Postal')
-        self.lbl10 = Label(frame, bg='#849797',)
-        self.cp_entry = UpperEntry(self.lbl10, width=28)
-
-        fed_label = Label(frame, text='Entidad Federativa')
-        self.lbl11 = Label(frame, bg='#849797',)
-        self.entFed_entry = UpperEntry(self.lbl11, width=28)
-
-        pob_label = Label(frame, text='Población')
-        self.lbl12 = Label(frame, bg='#849797',)
-        self.pob_entry = UpperEntry(self.lbl12, width=28)
-
-        tel_label = Label(frame, text='Teléfono(s)')
-        self.lbl13 = Label(frame, bg='#849797',)
-        self.tel_entry = UpperEntry(self.lbl13, width=28)
-
-        calle_label.grid(row=1, column=0, sticky=W, padx=2)
-        num_label.grid(row=1, column=1, sticky=W, padx=2)
-        col_label.grid(row=1, column=2, sticky=W, padx=2)
-        mpio_label.grid(row=3, column=0, sticky=W, padx=2)
-        cp_label.grid(row=3, column=1, sticky=W, padx=2)
-        fed_label.grid(row=3, column=2,  sticky=W, padx=2)
-        pob_label.grid(row=5, column=0,  sticky=W, padx=2)
-        tel_label.grid(row=5, column=1,  sticky=W, padx=2)
+        _label_6.grid(row=1, column=0, sticky=W, padx=2)
+        _label_7.grid(row=1, column=1, sticky=W, padx=2)
+        _label_8.grid(row=1, column=2, sticky=W, padx=2)
+        _label_9.grid(row=3, column=0, sticky=W, padx=2)
+        _label_10.grid(row=3, column=1, sticky=W, padx=2)
+        _label_11.grid(row=3, column=2,  sticky=W, padx=2)
+        _label_12.grid(row=5, column=0,  sticky=W, padx=2)
+        _label_13.grid(row=5, column=1,  sticky=W, padx=2)
 
         self.lbl6.grid(row=2, column=0, sticky=EW, padx=2)
-        self.lbl7.grid(row=2, column=1, sticky=W, padx=2)
-        self.lbl8.grid(row=2, column=2, sticky=W, padx=2)
+        self.lbl7.grid(row=2, column=1, sticky=EW, padx=2)
+        self.lbl8.grid(row=2, column=2, sticky=EW, padx=2)
         self.lbl9.grid(row=4, column=0, sticky=EW, padx=2)
         self.lbl10.grid(row=4, column=1, sticky=EW, padx=2)
         self.lbl11.grid(row=4, column=2, sticky=EW, padx=2)

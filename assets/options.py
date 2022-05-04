@@ -15,18 +15,6 @@ class Window_Center(Frame):
         y_wind = self.wind.winfo_screenheight() // 2 - wind_height // 2
         position = str(wind_width) + "x" + str(wind_height) + "+" + str(x_wind) + "+" + str(y_wind)
         return position
-
-class Info_System():
-    def __init__(self):
-        self.time = datetime.now()
-
-    def get_hour(self):
-        hour = '%s:%s:%s' % (self.time.hour, self.time.month, self.time.second)
-        return hour
-
-    def times():
-        current_time=time.strftime("%H:%M:%S")
-        return current_time
         
 class UpperEntry(ttk.Entry):
     def __init__(self, parent, *args, **kwargs):
@@ -54,3 +42,14 @@ class UpperEntry(ttk.Entry):
     def _to_upper(self, *args):
         self._var.set(self._var.get().upper())
 
+class Info_System():
+    def __init__(self):
+        self.time = datetime.now()
+
+    def get_hour(self):
+        hour = '%s:%s:%s' % (self.time.hour, self.time.month, self.time.second)
+        return hour
+
+    def times():
+        current_time=time.strftime("%H:%M:%S")
+        return current_time

@@ -39,37 +39,40 @@ class LoginView:
         self.icon_label_2 = Label(frame, text='2', image=self.img2)
 
         user_label = Label(frame, text='Usuario', font=("Arial Bold", 12, 'bold'))
-        self.user_label = Label(frame, bg='#849797')
-        user_entry = ttk.Entry(self.user_label, font=("Arial Bold", 12), width=30, textvariable=self.var_user)
+        pass_label = Label(frame, text='Contraseña', font=("Arial Bold", 12, 'bold'))
+
+        self.user_label = Label(frame, bg='#849797', width=30)
+        self.pass_label = Label(frame, bg='#849797', width=30)
+
+        user_entry = ttk.Entry(self.user_label, font=("Arial Bold", 12), textvariable=self.var_user, width=30)
         user_entry.focus()
 
-        pass_label = Label(frame, text='Contraseña', font=("Arial Bold", 12, 'bold'))
-        self.pass_label = Label(frame, bg='#849797')
-        pass_entry = ttk.Entry(self.pass_label, show='*', font=("Arial Bold", 12), width=30, textvariable=self.var_pass)
+        pass_entry = ttk.Entry(self.pass_label, show='*', font=("Arial Bold", 12), textvariable=self.var_pass, width=30)
         
         self.btn_accept = ttk.Button(frame, text='Aceptar', style=self.button_success())
         self.btn_cancel = ttk.Button(frame, text='Cancelar', style=self.button_danger(), command=self.exit)
 
         self.intentos_label = Label(frame, text='Intentos: 3', font=("Arial Bold", 8, 'bold'))
         self.msg_label = Label(frame, font=("Arial Bold", 10, 'bold'))
-        
+
         self.icon_label_1.grid(row=0, column=0, sticky=NSEW, rowspan=2)
         self.icon_label_2.grid(row=2, column=0, sticky=NSEW, rowspan=2)
-        
-        user_label.grid(row=0, column=1, sticky=W, padx=2)
-        self.user_label.grid(row=1, column=1, sticky=NSEW, columnspan=2)
-        user_entry.grid(row=0, column=0, sticky=W)
 
+        user_label.grid(row=0, column=1, sticky=W, padx=2)
         pass_label.grid(row=2, column=1, sticky=W, padx=2)
-        self.pass_label.grid(row=3, column=1, sticky=NSEW, columnspan=2)
-        pass_entry.grid(row=0, column=0, sticky=W)
         
+        self.user_label.grid(row=1, column=1, sticky=NSEW, columnspan=2)
+        self.pass_label.grid(row=3, column=1, sticky=NSEW, columnspan=2)
+
+        user_entry.pack(fill='both')
+        pass_entry.pack(fill='both')
+
         self.btn_accept.grid(row=4, column=1, padx=4, pady=10, ipady=2, sticky=EW)
         self.btn_cancel.grid(row=4, column=2, padx=4, pady=10, ipady=2, sticky=EW)
 
         self.intentos_label.grid(row=5, column=1, sticky=W, columnspan=2)
         self.msg_label.grid(row=6, column=1, sticky=W, columnspan=2)
-        
+
     def create_icon(self):
         self.img1 = PhotoImage(file='assets/images/label/person_FILL0_wght400_GRAD0_opsz48.png')
         self.img2 = PhotoImage(file='assets/images/label/lock_FILL0_wght400_GRAD0_opsz48.png')
