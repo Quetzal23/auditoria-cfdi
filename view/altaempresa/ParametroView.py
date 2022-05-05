@@ -1,6 +1,6 @@
 from cProfile import label
 from re import S
-from tkinter import CENTER, E, EW, HORIZONTAL, LEFT, N, NO, NSEW, RIGHT, VERTICAL, W, Entry, Label, LabelFrame, PhotoImage, StringVar
+from tkinter import CENTER, E, EW, HORIZONTAL, LEFT, N, NO, NSEW, RIGHT, VERTICAL, W, Label, LabelFrame, PhotoImage, StringVar
 from tkinter import ttk
 import tkinter as tk
 

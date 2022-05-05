@@ -19,6 +19,7 @@ class LoginController:
         username = self.view.var_user.get()
         userpass = self.view.var_pass.get()
 
+        # Buscar usuario y contraseña
         db_username = self.model.search_user(username)
         db_userpass = self.model.search_pass(userpass)
 
@@ -128,6 +129,7 @@ class LoginController:
             return idrol
 
     def successful(self, username):
+        # Obtener id usuario e id rol de usuario
         id_user = self.id_user(username)
         id_rol = self.id_roles_user(username)
 
