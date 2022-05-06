@@ -1,6 +1,5 @@
-from cProfile import label
-from re import S
-from tkinter import CENTER, E, EW, HORIZONTAL, LEFT, N, NO, NSEW, RIGHT, VERTICAL, W, Label, LabelFrame, PhotoImage, StringVar
+from tkinter import messagebox as mb
+from tkinter import CENTER, END, EW, HORIZONTAL, LEFT, NSEW, RIGHT, VERTICAL, W, Label, LabelFrame, PhotoImage, StringVar
 from tkinter import ttk
 import tkinter as tk
 
@@ -10,6 +9,10 @@ from assets.styles import Style
 class ParametroView():
     def on_closing(self):
         self.root.destroy()
+
+    def alert(self):
+        mb.showwarning('Alerta',
+            'Llene todos los campos para continuar')
 
     def __init__(self, root):
         super().__init__()
@@ -235,3 +238,130 @@ class ParametroView():
         self.entFed_entry.config(state='disabled')
         self.pob_entry.config(state='disabled')
         self.tel_entry.config(state='disabled')
+
+    def normal_entry(self):
+        self.nomEmp_entry.config(state='normal')
+        self.nomEmp_entry.focus()
+        self.nomCorto_entry.config(state='normal')
+        self.rfc_entry.config(state='normal')
+        self.noPatrl_entry.config(state='normal')
+        self.actPpal_entry.config(state='normal')
+        self.calle_entry.config(state='normal')
+        self.num_entry.config(state='normal')
+        self.col_entry.config(state='normal')
+        self.mpio_entry.config(state='normal')
+        self.cp_entry.config(state='normal')
+        self.entFed_entry.config(state='normal')
+        self.pob_entry.config(state='normal')
+        self.tel_entry.config(state='normal')
+
+    def formulario_completo(self):
+        self.lbl1.config(bg='#849797')
+        self.lbl2.config(bg='#849797')
+        self.lbl3.config(bg='#849797')
+        self.lbl4.config(bg='#849797')
+        self.lbl5.config(bg='#849797')
+        self.lbl6.config(bg='#849797')
+        self.lbl7.config(bg='#849797')
+        self.lbl8.config(bg='#849797')
+        self.lbl9.config(bg='#849797')
+        self.lbl10.config(bg='#849797')
+        self.lbl11.config(bg='#849797')
+        self.lbl12.config(bg='#849797')
+        self.lbl13.config(bg='#849797')
+
+    def formulario_incompleto(self):
+        if len(self.var1.get()) == 0:
+            self.lbl1.config(bg='red')
+        else:
+            self.lbl1.config(bg='#849797')
+        if len(self.var2.get()) == 0:
+            self.lbl2.config(bg='red')
+        else:
+            self.lbl2.config(bg='#849797')
+        if len(self.var3.get()) == 0:
+            self.lbl3.config(bg='red')
+        else:
+            self.lbl3.config(bg='#849797')
+        if len(self.var4.get()) == 0:
+            self.lbl4.config(bg='red')
+        else:
+            self.lbl4.config(bg='#849797')
+        if len(self.var5.get()) == 0:
+            self.lbl5.config(bg='red')
+        else:
+            self.lbl5.config(bg='#849797')
+
+
+        if len(self.var6.get()) == 0:
+            self.lbl6.config(bg='red')
+        else:
+            self.lbl6.config(bg='#849797')
+        if len(self.var7.get()) == 0:
+            self.lbl7.config(bg='red')
+        else:
+            self.lbl7.config(bg='#849797')
+        if len(self.var8.get()) == 0:
+            self.lbl8.config(bg='red')
+        else:
+            self.lbl8.config(bg='#849797')
+        if len(self.var9.get()) == 0:
+            self.lbl9.config(bg='red')
+        else:
+            self.lbl9.config(bg='#849797')
+        if len(self.var10.get()) == 0:
+            self.lbl10.config(bg='red')
+        else:
+            self.lbl10.config(bg='#849797')
+        if len(self.var11.get()) == 0:
+            self.lbl11.config(bg='red')
+        else:
+            self.lbl11.config(bg='#849797')
+        if len(self.var12.get()) == 0:
+            self.lbl12.config(bg='red')
+        else:
+            self.lbl12.config(bg='#849797')
+        if len(self.var13.get()) == 0:
+            self.lbl13.config(bg='red')
+        else:
+            self.lbl13.config(bg='#849797')
+
+    def _button_save(self):
+        self.btn_new['state'] = tk.DISABLED
+        self.btn_save['state'] = tk.NORMAL
+        self.btn_edit['state'] = tk.DISABLED
+        self.btn_delete['state'] = tk.DISABLED
+        self.btn_center['state'] = tk.DISABLED
+
+    def _button_new(self):
+        self.btn_new['state'] = tk.NORMAL
+        self.btn_save['state'] = tk.DISABLED
+        self.btn_edit['state'] = tk.DISABLED
+        self.btn_delete['state'] = tk.DISABLED
+        self.btn_center['state'] = tk.DISABLED
+
+    def bloquear_formulario(self):
+        self.nomEmp_entry.delete(0, END)
+        self.nomCorto_entry.delete(0, END)
+        self.rfc_entry.delete(0, END)
+        self.noPatrl_entry.delete(0, END)
+        self.actPpal_entry.delete(0, END)
+        self.calle_entry.delete(0, END)
+        self.num_entry.delete(0, END)
+        self.col_entry.delete(0, END)
+        self.mpio_entry.delete(0, END)
+        self.cp_entry.delete(0, END)
+        self.entFed_entry.delete(0, END)
+        self.pob_entry.delete(0, END)
+        self.tel_entry.delete(0, END)
+
+        self.disabled_entry()
+
+        self._button_new()
+
+    def _select_company(self):
+        self.btn_new['state'] = tk.NORMAL
+        self.btn_save['state'] = tk.DISABLED
+        self.btn_edit['state'] = tk.NORMAL
+        self.btn_delete['state'] = tk.NORMAL
+        self.btn_center['state'] = tk.NORMAL
