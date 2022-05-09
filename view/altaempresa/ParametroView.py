@@ -340,7 +340,31 @@ class ParametroView():
         self.btn_delete['state'] = tk.DISABLED
         self.btn_center['state'] = tk.DISABLED
 
-    def bloquear_formulario(self):
+    def _button_edit(self):
+        self.btn_new['state'] = tk.DISABLED
+        self.btn_save['state'] = tk.NORMAL
+        self.btn_edit['state'] = tk.DISABLED
+        self.btn_delete['state'] = tk.DISABLED
+        self.btn_center['state'] = tk.DISABLED
+
+    def limpiar_form_string(self):
+        self.var1.set('')
+        self.var2.set('')
+        self.var3.set('')
+        self.var4.set('')
+        self.var5.set('')
+        self.var6.set('')
+        self.var7.set('')
+        self.var8.set('')
+        self.var9.set('')
+        self.var10.set('')
+        self.var11.set('')
+        self.var12.set('')
+        self.var13.set('')
+
+    def limpiar_formulario(self):
+        self.limpiar_form_string()
+
         self.nomEmp_entry.delete(0, END)
         self.nomCorto_entry.delete(0, END)
         self.rfc_entry.delete(0, END)
@@ -355,8 +379,9 @@ class ParametroView():
         self.pob_entry.delete(0, END)
         self.tel_entry.delete(0, END)
 
+    def bloquear_formulario(self):
+        self.limpiar_formulario()
         self.disabled_entry()
-
         self._button_new()
 
     def _select_company(self):

@@ -13,6 +13,17 @@ class ParametroModel():
         query = 'INSERT INTO au_empresa_direccion VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?)'
         parameters = (calle, num, col, mpio, cp, entFed, pob, tel)
         self.db.run_query(query, parameters)
+
+    
+    def edit_company_general_data(self, nomEmp, nomCorto, rfc, noPatrl, actPpal, id):
+        query = 'UPDATE au_empresa_datos_generales SET nom_empresa=?, nom_corto_empresa=?, rfc_empresa=?, no_reg_patrl_empresa=?, act_ppal_empresa=? WHERE id_datos_generales=?'
+        parameters = (nomEmp, nomCorto, rfc, noPatrl, actPpal, id)
+        self.db.run_query(query, parameters)
+        
+    def edit_company_address(self, calle, num, col, mpio, cp, entFed, pob, tel, id):
+        query = 'UPDATE au_empresa_direccion SET calle_empresa=?, no_empresa=?, col_empresa=?, mpio_empresa=?, cp_empresa=?, ent_fed_empresa=?, pob_empresa=?, tels_empresa=? WHERE id_empresa_direccion=?'
+        parameters = (calle, num, col, mpio, cp, entFed, pob, tel, id)
+        self.db.run_query(query, parameters)
     
 
     def get_company_general_data(self, rfc):
@@ -67,3 +78,11 @@ class ParametroModel():
         db_rows = self.db.run_query(query, parameters)
         row = db_rows.fetchall()
         return row
+
+    def get_address_company_by_id(self, id):
+        query = 'SELECT * FROM au_empresa_direccion WHERE id_empresa_direccion=?'
+        parameters = (id, )
+        db_rows = self.db.run_query(query, parameters)
+        row = db_rows.fetchall()
+        return row
+        
