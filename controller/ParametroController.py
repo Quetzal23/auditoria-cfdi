@@ -7,6 +7,10 @@ class ParametroController:
         self.model = model
         self.view = view
 
+        style = self.view.style
+        self.color_danger = style.color__danger
+        self.color_success = style.color__success
+
         self.tipo_guardado = 0
 
         self.validar = Validation_Entry(self.view.root)
@@ -20,18 +24,22 @@ class ParametroController:
         self.view.treeview.bind ('<<TreeviewSelect>>', self._on_tree_select)
         self.get_empresa_matriz()
 
+    def input_validations(self):
+        # Codigo Postal
+        self.view.var10.trace("w", lambda *args: text_limiter(self.view.var10, 5))
+        self.view.cp_entry['validatecommand'] = (self.view.cp_entry.register(number_validation),'%P','%d')
+
     def new_button(self):
+        self.view.msg_label['text'] = ''
         self.tipo_guardado = 1
 
         self.view.limpiar_formulario()
         self.view._button_save()
         self.view.normal_entry()
 
-        # Codigo Postal
-        self.view.var10.trace("w", lambda *args: text_limiter(self.view.var10, 5))
-        self.view.cp_entry['validatecommand'] = (self.view.cp_entry.register(number_validation),'%P','%d')
-
-
+        # Validaciones de los inputs
+        self.input_validations()
+    
     def save_button(self):
         self.nomEmp   = self.view.var1.get()
         self.nomCorto = self.view.var2.get()
@@ -82,8 +90,8 @@ class ParametroController:
         
         self.view._select_company()
 
-        # Obtener id datos generales y direccion de la empresa
-        self.centrotrabajo(self.selected)
+        # Obtener id datos generales y form_direccion de la empresa
+        self.llenar_form_centrotrabajo(self.selected)
         
     def entry_validation_general_data(self):
         return (len(self.view.nomEmp_entry.get()) != 0 and len(self.view.nomCorto_entry.get()) != 0 and
@@ -96,12 +104,6 @@ class ParametroController:
             len(self.view.cp_entry.get()) != 0 and len(self.view.entFed_entry.get()) != 0 and
             len(self.view.pob_entry.get()) != 0 and len(self.view.tel_entry.get()) != 0)
 
-    '''def validar_datos_generales(self):
-        if self.validar.nombre_empresa(str(self.nomEmp)):
-            self.view.lbl1.config(bg='#849797')
-        else:
-            self.view.lbl1.config(bg='red')'''
-
 
     # Guardar empresa
     def add_dempresa(self):
@@ -110,7 +112,7 @@ class ParametroController:
             self.model.capture_company_address(self.calle, self.num, self.col, self.mpio, self.cp, self.entFed, self.pob, self.tel)
 
             try:
-                # Obtener id de los datos y direccion de la empresa
+                # Obtener id de los datos y form_direccion de la empresa
                 id_datos_empresa = self.get_id_datos_empresa()
                 id_direc_empresa = self.get_id_direccion_empresa()
                 
@@ -124,12 +126,18 @@ class ParametroController:
 
                     self.view.bloquear_formulario()
                     self.get_empresa_matriz()   # Llenar el treeview
+
+                    self.view.msg_label['text'] = 'Empresa capturada correctamente'
+                    self.view.msg_label['fg'] = self.color_success
                 except:
-                    print('No se logro capturar la Empresa Matriz')
+                    self.view.msg_label['text'] = 'No se logro capturar la Empresa Matriz'
+                    self.view.msg_label['fg'] = self.color_danger
             except:
-                print('No se logro capturar la Empresa')
+                self.view.msg_label['text'] = 'No se logro capturar la Empresa'
+                self.view.msg_label['fg'] = self.color_danger
         except:
-            print('No se logro capturar Los Parametros de Empresas')
+            self.view.msg_label['text'] = 'No se logro capturar Los Parametros de Empresas'
+            self.view.msg_label['fg'] = self.color_danger
     
     def get_id_datos_empresa(self):
         db_row = self.model.get_company_general_data(self.rfc)
@@ -157,7 +165,6 @@ class ParametroController:
         records = self.view.treeview.get_children()
         for element in records:
             self.view.treeview.delete(element)
-
         # Obtener todas las id de empresas
         db_row = self.model.get_mother_companies()
         for row in db_row:
@@ -178,14 +185,14 @@ class ParametroController:
             self.view.treeview.insert('', 0, text=id_emp, values=(name, ))  # Llenar el treeview
 
 
-    # Obtener los datos generales y la direccion de la empresa seleccionada del treeview
-    def centrotrabajo(self, selected):
+    # Obtener los datos generales y la form_direccion de la empresa seleccionada del treeview
+    def llenar_form_centrotrabajo(self, selected):
         db_row = self.model.get_company_by_id(selected)
         for row in db_row:
-            self.datosgenerales(row[1])
-            self.direccion(row[2])
+            self.form_datosgenerales(row[1])
+            self.form_direccion(row[2])
 
-    def datosgenerales(self, id_datos):
+    def form_datosgenerales(self, id_datos):
         db_row = self.model.get_data_company_by_id(id_datos)
         for row in db_row:
             self.view.var1.set(row[1])
@@ -194,7 +201,7 @@ class ParametroController:
             self.view.var4.set(row[4])
             self.view.var5.set(row[5])
 
-    def direccion(self, id_direccion):
+    def form_direccion(self, id_direccion):
         db_row = self.model.get_address_company_by_id(id_direccion)
         for row in db_row:
             self.view.var6.set(row[1])
@@ -209,6 +216,9 @@ class ParametroController:
 
     # Editar empresa
     def edit_empresa(self):
+        # Validaciones de los inputs
+        self.input_validations()
+
         nomEmp = self.view.nomEmp_entry.get()
         nomCorto = self.view.nomCorto_entry.get()
         rfc = self.view.rfc_entry.get()
@@ -224,13 +234,23 @@ class ParametroController:
         pob = self.view.pob_entry.get()
         tel = self.view.tel_entry.get()
 
-        try:
-            db_row = self.model.get_company_by_id(self.selected)
-            for row in db_row:
+        db_row = self.model.get_company_by_id(self.selected)
+        for row in db_row:
+            try:
                 self.model.edit_company_general_data(nomEmp, nomCorto, rfc, noPatrl, actPpal, row[1])
-                self.model.edit_company_address(calle, num, col, mpio, cp, entFed, pob, tel, row[2])
-        except:
-            print('No se guardaron los cambios')
+                try:
+                    self.model.edit_company_address(calle, num, col, mpio, cp, entFed, pob, tel, row[2])
 
+                    self.view.msg_label['text'] = 'Empresa actualizada correctamente'
+                    self.view.msg_label['fg'] = self.color_success
+                except:
+                    self.view.msg_label['text'] = 'No se logro actualizar los datos generales'
+                    self.view.msg_label['fg'] = self.color_danger
+                self.view.msg_label['text'] = 'Empresa actualizada correctamente'
+                self.view.msg_label['fg'] = self.color_success
+            except:
+                self.view.msg_label['text'] = 'No se logro actualizar los datos generales'
+                self.view.msg_label['fg'] = self.color_danger
+        
         self.get_empresa_matriz()   # Actualizar el treeview
         self.view.disabled_entry()

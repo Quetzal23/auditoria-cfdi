@@ -10,6 +10,11 @@ class LoginController:
         self.model = model
         self.view = view
 
+        style = self.view.style
+        self.color_danger = style.color__danger
+        self.color_normal = style.color__normal
+        self.color_success = style.color__success
+
         self.view.btn_accept['command'] = self.get_entry
     
     def entry_validation(self):
@@ -36,53 +41,53 @@ class LoginController:
                 self.total_intento = self.total_intento - 1
                 
                 self.view.msg_label['text'] = 'Los datos son incorrectos'
-                self.view.msg_label['fg'] = '#D70F21'
+                self.view.msg_label['fg'] = self.color_danger
                 
-                self.view.user_label.config(bg='red')
-                self.view.pass_label.config(bg='red')
+                self.view.user_label.config(bg=self.color_danger)
+                self.view.pass_label.config(bg=self.color_danger)
             else:
                 if db_username == []:
                     self.intentos = self.intentos + 1
                     self.total_intento = self.total_intento - 1
 
                     self.view.msg_label['text'] = 'El usuario es incorrecto'
-                    self.view.msg_label['fg'] = '#D70F21'
+                    self.view.msg_label['fg'] = self.color_danger
                     
-                    self.view.user_label.config(bg='red')
+                    self.view.user_label.config(bg=self.color_danger)
 
                 if db_userpass == []:
                     self.intentos = self.intentos + 1
                     self.total_intento = self.total_intento - 1
 
                     self.view.msg_label['text'] = 'La contraseña es incorrecta'
-                    self.view.msg_label['fg'] = '#D70F21'
+                    self.view.msg_label['fg'] = self.color_danger
 
-                    self.view.pass_label.config(bg='red')
+                    self.view.pass_label.config(bg=self.color_danger)
 
                 if db_username != [] and db_userpass != []:
                     self.view.msg_label['text'] = 'Iniciando sesión...'
-                    self.view.msg_label['fg'] = '#009A22'
+                    self.view.msg_label['fg'] = self.color_success
 
                     self.view.icon_label_2['image'] = self.view.img3
 
-                    self.view.user_label.config(bg='#009A22')
-                    self.view.pass_label.config(bg='#009A22')
+                    self.view.user_label.config(bg=self.color_success)
+                    self.view.pass_label.config(bg=self.color_success)
 
                     self.successful(db_username)
 
         else:
             self.view.msg_label['text'] = 'Completa los campos'
-            self.view.msg_label['fg'] = '#D70F21'
-            self.view.user_label.config(bg='red')
-            self.view.pass_label.config(bg='red')
+            self.view.msg_label['fg'] = self.color_danger     #'#D70F21'
+            self.view.user_label.config(bg=self.color_danger)
+            self.view.pass_label.config(bg=self.color_danger)
 
             if len(username):
-                self.view.user_label.config(bg='#849797')
-                self.view.pass_label.config(bg='red')
+                self.view.user_label.config(bg=self.color_normal)
+                self.view.pass_label.config(bg=self.color_danger)
 
             if len(userpass):
-                self.view.user_label.config(bg='red')
-                self.view.pass_label.config(bg='#849797')
+                self.view.user_label.config(bg=self.color_danger)
+                self.view.pass_label.config(bg=self.color_normal)
 
             #self.intentos = self.intentos + 1
             self.view.intentos_label['text'] = 'Intentos: 3'

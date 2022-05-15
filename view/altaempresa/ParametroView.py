@@ -22,7 +22,14 @@ class ParametroView():
         wind_height = 410#390
 
         wind = Window_Center(self.root)
-        self.style = Style()
+
+        style = Style()
+        self.color_normal = style.color__normal
+        self.color_danger = style.color__danger
+        self.color_success = style.color__success
+        self.color_title = style.color__title
+
+        self.Treeview = self.style.Treeview()
 
         self.root.grab_set()
         self.root.focus_force()
@@ -58,7 +65,7 @@ class ParametroView():
         self.create_icon()
 
         frame_top = LabelFrame(self.root, relief='flat')
-        frame_top.grid(row=0, column=0, columnspan=2, sticky=NSEW, padx=6)
+        frame_top.pack(fill='both')
 
         self.btn_new = ttk.Button(frame_top, text='New', image=self.img1,)
         self.btn_save = ttk.Button(frame_top, text='Save', image=self.img2,)
@@ -66,6 +73,7 @@ class ParametroView():
         self.btn_delete = ttk.Button(frame_top, text='Delete', image=self.img4)
         self.btn_center = ttk.Button(frame_top, text='Centro de Trabajo', image=self.img5)
         self.btn_exit = ttk.Button(frame_top, text='Exit', image=self.img6, command=self.on_closing)
+        self.msg_label = Label(frame_top, text='', width=50, anchor='e')
 
         self.btn_new.pack(side=LEFT, padx=4, pady=4,)
         self.btn_save.pack(side=LEFT, padx=4, pady=4,)
@@ -73,22 +81,26 @@ class ParametroView():
         self.btn_delete.pack(side=LEFT, padx=4, pady=4,)
         self.btn_center.pack(side=LEFT, padx=4, pady=4,)
         self.btn_exit.pack(side=RIGHT, padx=4, pady=4,)
+        self.msg_label.pack(side=RIGHT, padx=4, pady=4,)
 
     def frame_left(self):
-        frame_left = LabelFrame(self.root, bg='#849797', relief='flat')
-        frame_left.grid(row=1, column=0, sticky=NSEW, padx=6)
+        frame_left = LabelFrame(self.root, relief='flat')
+        frame_left.pack(side='left', fill='y')
 
-        self.treeview = ttk.Treeview(frame_left, height=15, style=self.style.Treeview())
+        frame = Label(frame_left, bg=self.color_normal)
+        frame.grid(row=0, column=0, sticky="nsew", padx=6)
+
+        self.treeview = ttk.Treeview(frame, height=15, style=self.Treeview)
         self.treeview['columns'] = ('Emp', )
         self.treeview.heading('#0', text='', anchor=CENTER)
         self.treeview.heading('Emp', text='Empresa', anchor=CENTER)
         self.treeview.column('#0', stretch=False, width=0, minwidth=0)
         self.treeview.column('Emp', stretch=False, width=300, minwidth=300)
 
-        vscrollbar = ttk.Scrollbar(frame_left, orient=VERTICAL, command=self.treeview.yview)
+        vscrollbar = ttk.Scrollbar(frame, orient=VERTICAL, command=self.treeview.yview)
         self.treeview.configure(yscrollcommand=vscrollbar.set)
 
-        hscrollbar = ttk.Scrollbar(frame_left, orient=HORIZONTAL, command=self.treeview.xview)
+        hscrollbar = ttk.Scrollbar(frame, orient=HORIZONTAL, command=self.treeview.xview)
         self.treeview.configure(xscrollcommand=hscrollbar.set)
 
         self.treeview.grid(row=0, column=0, sticky="nsew")
@@ -98,16 +110,20 @@ class ParametroView():
 
     def frame_right(self):
         frame_right = LabelFrame(self.root, relief='flat')
-        frame_right.grid(row=1, column=1, sticky=NSEW, padx=6)
+        #frame_right.grid(row=1, column=1, sticky=NSEW, padx=6)
+        frame_right.pack(expand=True, fill='both')
 
-        self.datos_generales(frame_right)
-        Label(frame_right).grid(row=1)
-        self.direccion(frame_right)
+        frame = Label(frame_right)
+        frame.grid(row=0, column=0, sticky="nsew", padx=6)
+
+        self.datos_generales(frame)
+        Label(frame).grid(row=1)
+        self.direccion(frame)
         
         self.disabled_entry()
 
     def datos_generales(self, labelframe):
-        frame = LabelFrame(labelframe, text='Datos Generales', fg='blue', relief='flat')
+        frame = LabelFrame(labelframe, text='Datos Generales', fg=self.color_title, relief='flat')
         frame.grid(row=0, column=0, sticky=NSEW, padx=6)
         
         _label_1 = Label(frame, text='Nombre de Empresa', anchor='w')
@@ -116,11 +132,11 @@ class ParametroView():
         _label_4 = Label(frame, text='# Registro Patronal', width=24, anchor='w')
         _label_5 = Label(frame, text='Datos Generales', anchor='w')
 
-        self.lbl1 = Label(frame, bg='#849797')
-        self.lbl2 = Label(frame, bg='#849797')
-        self.lbl3 = Label(frame, bg='#849797')
-        self.lbl4 = Label(frame, bg='#849797')
-        self.lbl5 = Label(frame, bg='#849797')
+        self.lbl1 = Label(frame, bg=self.color_normal)
+        self.lbl2 = Label(frame, bg=self.color_normal)
+        self.lbl3 = Label(frame, bg=self.color_normal)
+        self.lbl4 = Label(frame, bg=self.color_normal)
+        self.lbl5 = Label(frame, bg=self.color_normal)
 
         self.var1 = StringVar()
         self.var2 = StringVar()
@@ -153,7 +169,7 @@ class ParametroView():
         self.actPpal_entry.pack(fill='both')
     
     def direccion(self, labelframe):
-        frame = LabelFrame(labelframe, text='Dirección', fg='blue', relief='flat')
+        frame = LabelFrame(labelframe, text='Dirección', fg=self.color_title, relief='flat')
         frame.grid(row=2, column=0, sticky=NSEW, padx=6)
 
         _label_6 = Label(frame, text='Calle', width=24, anchor='w')
@@ -165,14 +181,14 @@ class ParametroView():
         _label_12 = Label(frame, text='Población', width=24, anchor='w')
         _label_13 = Label(frame, text='Teléfono(s)', width=24, anchor='w')
 
-        self.lbl6 = Label(frame, bg='#849797')
-        self.lbl7 = Label(frame, bg='#849797')
-        self.lbl8 = Label(frame, bg='#849797')
-        self.lbl9 = Label(frame, bg='#849797')
-        self.lbl10 = Label(frame, bg='#849797')
-        self.lbl11 = Label(frame, bg='#849797')
-        self.lbl12 = Label(frame, bg='#849797')
-        self.lbl13 = Label(frame, bg='#849797')
+        self.lbl6 = Label(frame, bg=self.color_normal)
+        self.lbl7 = Label(frame, bg=self.color_normal)
+        self.lbl8 = Label(frame, bg=self.color_normal)
+        self.lbl9 = Label(frame, bg=self.color_normal)
+        self.lbl10 = Label(frame, bg=self.color_normal)
+        self.lbl11 = Label(frame, bg=self.color_normal)
+        self.lbl12 = Label(frame, bg=self.color_normal)
+        self.lbl13 = Label(frame, bg=self.color_normal)
         
         self.var6 = StringVar()
         self.var7 = StringVar()
@@ -256,75 +272,75 @@ class ParametroView():
         self.tel_entry.config(state='normal')
 
     def formulario_completo(self):
-        self.lbl1.config(bg='#849797')
-        self.lbl2.config(bg='#849797')
-        self.lbl3.config(bg='#849797')
-        self.lbl4.config(bg='#849797')
-        self.lbl5.config(bg='#849797')
-        self.lbl6.config(bg='#849797')
-        self.lbl7.config(bg='#849797')
-        self.lbl8.config(bg='#849797')
-        self.lbl9.config(bg='#849797')
-        self.lbl10.config(bg='#849797')
-        self.lbl11.config(bg='#849797')
-        self.lbl12.config(bg='#849797')
-        self.lbl13.config(bg='#849797')
+        self.lbl1.config(bg=self.color_normal)
+        self.lbl2.config(bg=self.color_normal)
+        self.lbl3.config(bg=self.color_normal)
+        self.lbl4.config(bg=self.color_normal)
+        self.lbl5.config(bg=self.color_normal)
+        self.lbl6.config(bg=self.color_normal)
+        self.lbl7.config(bg=self.color_normal)
+        self.lbl8.config(bg=self.color_normal)
+        self.lbl9.config(bg=self.color_normal)
+        self.lbl10.config(bg=self.color_normal)
+        self.lbl11.config(bg=self.color_normal)
+        self.lbl12.config(bg=self.color_normal)
+        self.lbl13.config(bg=self.color_normal)
 
     def formulario_incompleto(self):
         if len(self.var1.get()) == 0:
-            self.lbl1.config(bg='red')
+            self.lbl1.config(bg=self.color_danger)
         else:
-            self.lbl1.config(bg='#849797')
+            self.lbl1.config(bg=self.color_normal)
         if len(self.var2.get()) == 0:
-            self.lbl2.config(bg='red')
+            self.lbl2.config(bg=self.color_danger)
         else:
-            self.lbl2.config(bg='#849797')
+            self.lbl2.config(bg=self.color_normal)
         if len(self.var3.get()) == 0:
-            self.lbl3.config(bg='red')
+            self.lbl3.config(bg=self.color_danger)
         else:
-            self.lbl3.config(bg='#849797')
+            self.lbl3.config(bg=self.color_normal)
         if len(self.var4.get()) == 0:
-            self.lbl4.config(bg='red')
+            self.lbl4.config(bg=self.color_danger)
         else:
-            self.lbl4.config(bg='#849797')
+            self.lbl4.config(bg=self.color_normal)
         if len(self.var5.get()) == 0:
-            self.lbl5.config(bg='red')
+            self.lbl5.config(bg=self.color_danger)
         else:
-            self.lbl5.config(bg='#849797')
+            self.lbl5.config(bg=self.color_normal)
 
 
         if len(self.var6.get()) == 0:
-            self.lbl6.config(bg='red')
+            self.lbl6.config(bg=self.color_danger)
         else:
-            self.lbl6.config(bg='#849797')
+            self.lbl6.config(bg=self.color_normal)
         if len(self.var7.get()) == 0:
-            self.lbl7.config(bg='red')
+            self.lbl7.config(bg=self.color_danger)
         else:
-            self.lbl7.config(bg='#849797')
+            self.lbl7.config(bg=self.color_normal)
         if len(self.var8.get()) == 0:
-            self.lbl8.config(bg='red')
+            self.lbl8.config(bg=self.color_danger)
         else:
-            self.lbl8.config(bg='#849797')
+            self.lbl8.config(bg=self.color_normal)
         if len(self.var9.get()) == 0:
-            self.lbl9.config(bg='red')
+            self.lbl9.config(bg=self.color_danger)
         else:
-            self.lbl9.config(bg='#849797')
+            self.lbl9.config(bg=self.color_normal)
         if len(self.var10.get()) == 0:
-            self.lbl10.config(bg='red')
+            self.lbl10.config(bg=self.color_danger)
         else:
-            self.lbl10.config(bg='#849797')
+            self.lbl10.config(bg=self.color_normal)
         if len(self.var11.get()) == 0:
-            self.lbl11.config(bg='red')
+            self.lbl11.config(bg=self.color_danger)
         else:
-            self.lbl11.config(bg='#849797')
+            self.lbl11.config(bg=self.color_normal)
         if len(self.var12.get()) == 0:
-            self.lbl12.config(bg='red')
+            self.lbl12.config(bg=self.color_danger)
         else:
-            self.lbl12.config(bg='#849797')
+            self.lbl12.config(bg=self.color_normal)
         if len(self.var13.get()) == 0:
-            self.lbl13.config(bg='red')
+            self.lbl13.config(bg=self.color_danger)
         else:
-            self.lbl13.config(bg='#849797')
+            self.lbl13.config(bg=self.color_normal)
 
     def _button_save(self):
         self.btn_new['state'] = tk.DISABLED

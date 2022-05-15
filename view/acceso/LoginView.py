@@ -19,6 +19,18 @@ class LoginView:
         
         wind = Window_Center(self.root)
 
+        self.style = Style()
+
+        self.color_normal = self.style.color__normal
+
+        self.style_font = self.style.font
+        self.font_size_title = self.style.fontsize_title
+        self.font_size_cont = self.style.fontsize_cont
+        self.font_size_msg = self.style.fontsize_msg
+
+        self.button_success = self.style.TButton__success()
+        self.button_danger = self.style.TButton__danger()
+
         self.root.title('INICIO DE SESIÓN DE USUARIO')
         self.root.geometry(wind.center(width, height))
         self.root.resizable(0, 0)
@@ -38,22 +50,22 @@ class LoginView:
         self.icon_label_1 = Label(frame, text='1', image=self.img1)
         self.icon_label_2 = Label(frame, text='2', image=self.img2)
 
-        user_label = Label(frame, text='Usuario', font=("Arial Bold", 12, 'bold'))
-        pass_label = Label(frame, text='Contraseña', font=("Arial Bold", 12, 'bold'))
+        user_label = Label(frame, text='Usuario', font=(self.style_font, self.font_size_title, 'bold'))
+        pass_label = Label(frame, text='Contraseña', font=(self.style_font, self.font_size_title, 'bold'))
 
-        self.user_label = Label(frame, bg='#849797', width=30)
-        self.pass_label = Label(frame, bg='#849797', width=30)
+        self.user_label = Label(frame, bg=self.color_normal, width=30)
+        self.pass_label = Label(frame, bg=self.color_normal, width=30)
 
-        user_entry = ttk.Entry(self.user_label, font=("Arial Bold", 12), textvariable=self.var_user, width=30)
+        user_entry = ttk.Entry(self.user_label, font=(self.style_font, self.font_size_title), textvariable=self.var_user, width=30)
         user_entry.focus()
 
-        pass_entry = ttk.Entry(self.pass_label, show='*', font=("Arial Bold", 12), textvariable=self.var_pass, width=30)
+        pass_entry = ttk.Entry(self.pass_label, show='*', font=(self.style_font, self.font_size_title), textvariable=self.var_pass, width=30)
         
-        self.btn_accept = ttk.Button(frame, text='Aceptar', style=self.button_success())
-        self.btn_cancel = ttk.Button(frame, text='Cancelar', style=self.button_danger(), command=self.exit)
+        self.btn_accept = ttk.Button(frame, text='Aceptar', style=self.button_success)
+        self.btn_cancel = ttk.Button(frame, text='Cancelar', style=self.button_danger, command=self.exit)
 
-        self.intentos_label = Label(frame, text='Intentos: 3', font=("Arial Bold", 8, 'bold'))
-        self.msg_label = Label(frame, font=("Arial Bold", 10, 'bold'))
+        self.intentos_label = Label(frame, text='Intentos: 3', font=(self.style_font, self.font_size_cont, 'bold'))
+        self.msg_label = Label(frame, font=(self.style_font, self.font_size_msg, 'bold'))
 
         self.icon_label_1.grid(row=0, column=0, sticky=NSEW, rowspan=2)
         self.icon_label_2.grid(row=2, column=0, sticky=NSEW, rowspan=2)
@@ -77,13 +89,3 @@ class LoginView:
         self.img1 = PhotoImage(file='assets/images/label/person_FILL0_wght400_GRAD0_opsz48.png')
         self.img2 = PhotoImage(file='assets/images/label/lock_FILL0_wght400_GRAD0_opsz48.png')
         self.img3 = PhotoImage(file='assets/images/label/lock_open_FILL0_wght400_GRAD0_opsz48.png')
-
-    def button_success(self):
-        style = Style()
-        b = style.TButton__success()
-        return b
-
-    def button_danger(self):
-        style = Style()
-        b = style.TButton__danger()
-        return b
