@@ -7,7 +7,7 @@ class Style:
         #print(self.style.theme_names())
         #print(self.style.theme_use())
         
-        self.font = 'Arial'
+        self.font = 'Arial Bold'
         self.fontsize_title = 12
         self.fontsize_cont = 8
         self.fontsize_msg = 10
@@ -37,5 +37,5 @@ class Style:
 
     def TNotebook_Tab(self):
         a = "TNotebook.Tab"
-        self.style.configure(a, padding=[4, 4], font=(self.font, 12))
+        self.style.configure(a, padding=[2, 2], font=(self.font, 10))
         self.style.map(a, foreground= [("selected", self.color__title)])

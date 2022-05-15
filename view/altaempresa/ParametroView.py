@@ -23,11 +23,11 @@ class ParametroView():
 
         wind = Window_Center(self.root)
 
-        style = Style()
-        self.color_normal = style.color__normal
-        self.color_danger = style.color__danger
-        self.color_success = style.color__success
-        self.color_title = style.color__title
+        self.style = Style()
+        self.color_normal = self.style.color__normal
+        self.color_danger = self.style.color__danger
+        self.color_success = self.style.color__success
+        self.color_title = self.style.color__title
 
         self.Treeview = self.style.Treeview()
 
