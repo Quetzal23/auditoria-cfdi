@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import CENTER, EW, HORIZONTAL, INSERT, LEFT, NSEW, RIGHT, VERTICAL, W, IntVar, Label, LabelFrame, PhotoImage, Radiobutton, StringVar, Text
+from tkinter import CENTER, EW, HORIZONTAL, LEFT, NSEW, RIGHT, VERTICAL, W, IntVar, Label, LabelFrame, PhotoImage, Radiobutton, StringVar
 from tkinter import ttk
 from tkcalendar import *
 
@@ -109,18 +108,17 @@ class CentroTrabajoView:
 
     def frame_right(self):
         frame_right = LabelFrame(self.root, relief='flat')
-        frame_right.pack(fill='y',)      #expand=True, fill='both'
+        frame_right.pack(fill='y',)
 
-        frame = Label(frame_right, bg=self.color_normal)
-        #frame.pack(fill='both', ipady=28)
-        frame.grid(row=0, column=0, sticky="nsew", padx=6)
+        frame = Label(frame_right,) # bg=self.color_normal
+        frame.grid(row=0, column=0, sticky="nsew", padx=6, ipady=32)
 
         notebook = ttk.Notebook(frame)
 
-        self.l1 = ttk.Frame(notebook)
-        self.l2 = ttk.Frame(notebook)
-        self.l3 = ttk.Frame(notebook)
-        self.l4 = ttk.Frame(notebook)
+        self.l1 = LabelFrame(notebook, relief='flat')
+        self.l2 = LabelFrame(notebook, relief='flat')
+        self.l3 = LabelFrame(notebook, relief='flat')
+        self.l4 = LabelFrame(notebook, relief='flat') #, background='#FFFFFF'
 
         notebook.add(self.l1, text="Datos Generales", compound='center')
         notebook.add(self.l2, text="Dirección")
@@ -131,12 +129,12 @@ class CentroTrabajoView:
         notebook.pack(fill='both', expand=True, ipadx=0, ipady=0)
 
         self.datos_generales()
-        '''self.direccion()
+        self.direccion()
         self.representante_legal()
-        self.configuracion_general()'''
+        self.configuracion_general()
 
     def datos_generales(self):
-        _label_1 = Label(self.l1, text='# Registro Patronal', anchor='w', width=22)
+        _label_1 = ttk.Label(self.l1, text='# Registro Patronal', anchor='w', width=22)
         _label_2 = Label(self.l1, text='Fecha Inicio de Act', anchor='w', width=22)
         _label_3 = Label(self.l1, text='Contador Público', anchor='w', width=22)
         #_label_4 = Label(self.l1, text='Nombre Representante legal', anchor='w', width=22)
@@ -175,10 +173,10 @@ class CentroTrabajoView:
 
         a1 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
         a2 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
-        a3 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        #a3 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
         a4 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
-        a5 = Label(self.l1, text=' ', fg=self.color_danger, font=(self.font, 13, 'bold'))
-        #a6 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a5 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a6 = Label(self.l1, text=' ', fg=self.color_danger, font=(self.font, 13, 'bold'))
         #a7 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
         #a8 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
         
@@ -202,9 +200,9 @@ class CentroTrabajoView:
 
         a1.grid(row=1, column=1)
         a2.grid(row=1, column=3)
-        a3.grid(row=5, column=1)
-        a4.grid(row=5, column=3)
-        a5.grid(row=5, column=5)
+        a4.grid(row=5, column=1)
+        a5.grid(row=5, column=3)
+        a6.grid(row=5, column=5)
 
         self.regPtrl_entry.pack(fill='both')
         self.fIniAct_entry.pack(fill='both')
@@ -253,24 +251,42 @@ class CentroTrabajoView:
         self.pob_entry = UpperEntry(self.lbl15, textvariable=self.var15)
         self.tel_entry = UpperEntry(self.lbl16, textvariable=self.var16)
 
+        a9 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a10 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a11 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a12 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a13 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a14 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a15 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a16 = Label(self.l2, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+
         _label_9.grid(row=1, column=0, sticky=W, padx=2)
-        _label_10.grid(row=1, column=1, sticky=W, padx=2)
+        _label_10.grid(row=1, column=2, sticky=W, padx=2)
         _label_11.grid(row=3, column=0, sticky=W, padx=2)
-        _label_12.grid(row=3, column=1, sticky=W, padx=2)
+        _label_12.grid(row=3, column=2, sticky=W, padx=2)
         _label_13.grid(row=5, column=0, sticky=W, padx=2)
-        _label_14.grid(row=5, column=1,  sticky=W, padx=2)
+        _label_14.grid(row=5, column=2,  sticky=W, padx=2)
         _label_15.grid(row=7, column=0,  sticky=W, padx=2)
-        _label_16.grid(row=7, column=1,  sticky=W, padx=2)
+        _label_16.grid(row=7, column=2,  sticky=W, padx=2)
 
         self.lbl9.grid(row=2, column=0, sticky=EW, padx=2)
-        self.lbl10.grid(row=2, column=1, sticky=EW, padx=2)
+        self.lbl10.grid(row=2, column=2, sticky=EW, padx=2)
         self.lbl11.grid(row=4, column=0, sticky=EW, padx=2)
-        self.lbl12.grid(row=4, column=1, sticky=EW, padx=2)
+        self.lbl12.grid(row=4, column=2, sticky=EW, padx=2)
         self.lbl13.grid(row=6, column=0, sticky=EW, padx=2)
-        self.lbl14.grid(row=6, column=1, sticky=EW, padx=2)
+        self.lbl14.grid(row=6, column=2, sticky=EW, padx=2)
         self.lbl15.grid(row=8, column=0, sticky=EW, padx=2)
-        self.lbl16.grid(row=8, column=1, sticky=EW, padx=2)
+        self.lbl16.grid(row=8, column=2, sticky=EW, padx=2)
         
+        a9.grid(row=2, column=1)
+        a10.grid(row=2, column=3)
+        a11.grid(row=4, column=1)
+        a12.grid(row=4, column=3)
+        a13.grid(row=6, column=1)
+        a14.grid(row=6, column=3)
+        a15.grid(row=8, column=1)
+        a16.grid(row=8, column=3)
+
         self.calle_entry.pack(fill='both')
         self.num_entry.pack(fill='both')
         self.col_entry.pack(fill='both')
@@ -327,29 +343,39 @@ class CentroTrabajoView:
         _label_24 = Label(self.l4, text='Ejemplo', anchor='w')
         _label_25 = Label(self.l4, text='Nombre del Centro de Trabajo', anchor='w')
 
-        #self.lbl22 = Label(self.l3, bg=self.color_normal)
+        a22 = Label(self.l4, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a23 = Label(self.l4, text=' ', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a24 = Label(self.l4, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        '''a25 = Label(self.l4, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
+        a26 = Label(self.l4, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))'''
+
         label = LabelFrame(self.l4,)
-        label.grid(row=1, column=0, sticky=NSEW, padx=2, rowspan=2)
         self.lbl22 = Label(self.l4, bg=self.color_normal, width=18)
         self.lbl23 = Label(self.l4, bg=self.color_normal, width=24)
         self.lbl24 = Label(self.l4, bg=self.color_normal)   #, width=24
-
+        
         Radiobutton(label, text="Numérico", variable=opcion, value=1, ).pack(anchor=W)  #command=
         Radiobutton(label, text="Alfanumérico", variable=opcion, value=2, ).pack(anchor=W)
-
         self.long_entry = ttk.Entry(self.lbl22)
         self.nCenTrab_entry = UpperEntry(self.lbl24)
 
-        _label_22.grid(row=0, column=0, sticky=NSEW, columnspan=3, padx=2)
-        _label_23.grid(row=1, column=1, padx=2)
-        _label_24.grid(row=1, column=2, padx=2)
+        _label_22.grid(row=0, column=0, sticky=NSEW, columnspan=6, padx=2)
+        _label_23.grid(row=1, column=2, padx=2)
+        _label_24.grid(row=1, column=4, padx=2)
         _label_25.grid(row=3, column=0, padx=2)
 
-        self.lbl22.grid(row=2, column=1, padx=2)
-        self.lbl23.grid(row=2, column=2, padx=2)
-        self.lbl24.grid(row=4, column=0, sticky=NSEW, columnspan=2, padx=2,)
+        self.lbl22.grid(row=2, column=2, padx=2)
+        self.lbl23.grid(row=2, column=4, padx=2)
+        self.lbl24.grid(row=4, column=0, sticky=NSEW, columnspan=3, padx=2,)
+        
+        label.grid(row=1, column=0, sticky=NSEW, padx=2, rowspan=2)
+        
+        a22.grid(row=2, column=3)
+        a23.grid(row=2, column=5)
+        a24.grid(row=4, column=3)
 
         self.long_entry.pack(fill='both')
+        self.nCenTrab_entry.pack(fill='both')
 
 
     def configuracion_nomina(self):

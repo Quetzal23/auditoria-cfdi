@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import EW, NSEW, W, Label, LabelFrame, PhotoImage, StringVar
 from tkinter import ttk
 

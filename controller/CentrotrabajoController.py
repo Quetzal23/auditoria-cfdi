@@ -3,4 +3,4 @@ class CentroTrabajoController:
         self.model = model
         self.view = view
 
-        print(self.view.id_e)
+        #print(self.view.id_e)

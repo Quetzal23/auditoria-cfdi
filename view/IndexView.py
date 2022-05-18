@@ -1,5 +1,4 @@
 import time
-import tkinter as tk
 from tkinter import LEFT, RIGHT, Label, LabelFrame, Menu
 from tkinter.messagebox import showinfo
 

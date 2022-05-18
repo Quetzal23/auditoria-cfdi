@@ -37,5 +37,5 @@ class Style:
 
     def TNotebook_Tab(self):
         a = "TNotebook.Tab"
-        self.style.configure(a, padding=[2, 2], font=(self.font, 10))
+        self.style.configure(a, padding=[4, 3], font=(self.font, 10))
         self.style.map(a, foreground= [("selected", self.color__title)])

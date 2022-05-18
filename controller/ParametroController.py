@@ -58,12 +58,12 @@ class ParametroController:
 
         if self.entry_validation_general_data() and self.entry_validation_address():
             self.view.formulario_completo()
-            
             #self.validar_datos_generales()
+
             if self.tipo_guardado == 1:
-                self.add_dempresa() # Llenar Datos Generales y Direccion en la bd
+                self.add_empresa_matriz() # Llenar Datos Generales y Direccion en la bd
             if self.tipo_guardado == 2:
-                self.edit_empresa()
+                self.edit_empresa() # Editar Datos Generales y Direccion en la bd
             self.tipo_guardado = 0
         else:
             self.view.formulario_incompleto()
@@ -90,8 +90,8 @@ class ParametroController:
         
         self.view._select_company()
 
-        # Obtener id datos generales y form_direccion de la empresa
-        self.llenar_form_centrotrabajo(self.selected)
+        # Imprimir formulario
+        self.imprimir_formulario(self.selected)
         
     def entry_validation_general_data(self):
         return (len(self.view.nomEmp_entry.get()) != 0 and len(self.view.nomCorto_entry.get()) != 0 and
@@ -106,29 +106,33 @@ class ParametroController:
 
 
     # Guardar empresa
-    def add_dempresa(self):
-        try:
-            self.model.capture_company_general_data(self.nomEmp, self.nomCorto, self.rfc, self.noPatrl, self.actPpal)
-            self.model.capture_company_address(self.calle, self.num, self.col, self.mpio, self.cp, self.entFed, self.pob, self.tel)
+    def add_empresa_matriz(self):
+        self.model.capture_company_general_data(self.nomEmp, self.nomCorto, self.rfc, self.noPatrl, self.actPpal)
+        self.model.capture_company_address(self.calle, self.num, self.col, self.mpio, self.cp, self.entFed, self.pob, self.tel)
 
+        try:
+            # Obtener id de los datos y form_direccion de la empresa
+            id_datos_empresa = self.get_id_company_data()
+            id_direc_empresa = self.get_id_company_address()
+            
             try:
-                # Obtener id de los datos y form_direccion de la empresa
-                id_datos_empresa = self.get_id_datos_empresa()
-                id_direc_empresa = self.get_id_direccion_empresa()
-                
                 # Llenar la tabla de empresas
                 self.model.capture_company(id_datos_empresa, id_direc_empresa)
                 try:
-                    # Obtener id empresa
-                    id_empresa = self.get_id_empresa(id_datos_empresa, id_direc_empresa)
+                    # Obtener id de la empresa
+                    db_row = self.model.get_company(id_datos_empresa, id_direc_empresa)
+                    for row in db_row:
+                        id = row[0]
+
                     # Llenar impresa matriz
-                    self.model.capture_mother_company(id_empresa)
+                    self.model.capture_mother_company(id)
 
                     self.view.bloquear_formulario()
                     self.get_empresa_matriz()   # Llenar el treeview
 
                     self.view.msg_label['text'] = 'Empresa capturada correctamente'
                     self.view.msg_label['fg'] = self.color_success
+                    
                 except:
                     self.view.msg_label['text'] = 'No se logro capturar la Empresa Matriz'
                     self.view.msg_label['fg'] = self.color_danger
@@ -138,62 +142,50 @@ class ParametroController:
         except:
             self.view.msg_label['text'] = 'No se logro capturar Los Parametros de Empresas'
             self.view.msg_label['fg'] = self.color_danger
-    
-    def get_id_datos_empresa(self):
-        db_row = self.model.get_company_general_data(self.rfc)
+
+    # Obtener el id de los datos de la empresa
+    def get_id_company_data(self):
+        db_row = self.model.get_company_general_data(self.rfc, self.noPatrl)
         for row in db_row:
             id = row[0]
             return id
 
-    def get_id_direccion_empresa(self):
-        db_row = self.model.get_company_address(self.cp)
+    # Obtener el id de direccion de la empresa
+    def get_id_company_address(self):
+        db_row = self.model.get_company_address(self.num, self.cp)
         for row in db_row:
             id = row[0]
             return id
-
     
-    def get_id_empresa(self, id_dato, id_dir):
-        db_row = self.model.get_company(id_dato, id_dir)
-        for row in db_row:
-            id = row[0]
-            return id
 
-    
-    # Obtener el nombre de la empresa y agregarlo al treeview
+    # Llenar treeview de las empresas matriz
     def get_empresa_matriz(self):
-        # Limpiar tabla
         records = self.view.treeview.get_children()
-        for element in records:
+        for element in records: # Limpiar tabla
             self.view.treeview.delete(element)
-        # Obtener todas las id de empresas
-        db_row = self.model.get_mother_companies()
-        for row in db_row:
-            self.get_id_datos_empresa_matriz(row[1])  # Obtener id de la empresa matriz
-        
-    def get_id_datos_empresa_matriz(self, id_emp):
-        # Obtener todas id de datos generales
-        db_row = self.model.get_company_by_id(id_emp)
-        for row in db_row:
-            # Obtener id datos generales de la empreza matriz
-            self.get_nombre_empresa_matriz(row[1], id_emp)
 
-    def get_nombre_empresa_matriz(self, id_dato, id_emp):
-        # Obtener todos los nombres de la empresa
-        db_row = self.model.get_data_company_by_id(id_dato)
-        for row in db_row:
-            name = row[1] # Obtener nombre de la empreza matriz
-            self.view.treeview.insert('', 0, text=id_emp, values=(name, ))  # Llenar el treeview
+        matriz = self.model.get_mother_company()
+        for row in matriz:  # Obtener id de empresa matriz
+            id_emp = row[1]
+            db_row = self.model.get_company_by_id(id_emp)
+            
+            for data in db_row: # Obtener id datos generales de la empreza matriz
+                datos = self.model.get_company_general_data_by_id(data[1])
 
+                for tree in datos:
+                    name = tree[1] # Obtener nombre de la empreza matriz
+                    self.view.treeview.insert('', 0, text=id_emp, values=(name, ))  # Llenar el treeview
+    
 
-    # Obtener los datos generales y la form_direccion de la empresa seleccionada del treeview
-    def llenar_form_centrotrabajo(self, selected):
+    # Llenar el formulario
+    def imprimir_formulario(self, selected):
         db_row = self.model.get_company_by_id(selected)
         for row in db_row:
             self.form_datosgenerales(row[1])
             self.form_direccion(row[2])
 
     def form_datosgenerales(self, id_datos):
-        db_row = self.model.get_data_company_by_id(id_datos)
+        db_row = self.model.get_company_general_data_by_id(id_datos)
         for row in db_row:
             self.view.var1.set(row[1])
             self.view.var2.set(row[2])
@@ -202,7 +194,7 @@ class ParametroController:
             self.view.var5.set(row[5])
 
     def form_direccion(self, id_direccion):
-        db_row = self.model.get_address_company_by_id(id_direccion)
+        db_row = self.model.get_company_address_by_id(id_direccion)
         for row in db_row:
             self.view.var6.set(row[1])
             self.view.var7.set(row[2])
@@ -212,7 +204,7 @@ class ParametroController:
             self.view.var11.set(row[6])
             self.view.var12.set(row[7])
             self.view.var13.set(row[8])
-    
+
 
     # Editar empresa
     def edit_empresa(self):
