@@ -28,7 +28,7 @@ def index(id_user, id_rol=()):
     view = IndexView(root, id_user, id_rol)
     model = IndexModel()
     controller = IndexController(model, view)
-    root.mainloop() # Eliminar despues de acabar con las pruebas, Desactivar al iniciar con el login
+    #root.mainloop() # Eliminar despues de acabar con las pruebas, Desactivar al iniciar con el login
 
 def parametro_empresas():
     root = Toplevel()

@@ -1,4 +1,4 @@
-from tkinter import CENTER, EW, HORIZONTAL, LEFT, NSEW, RIGHT, VERTICAL, W, IntVar, Label, LabelFrame, PhotoImage, Radiobutton, StringVar
+from tkinter import CENTER, END, EW, HORIZONTAL, LEFT, NSEW, RIGHT, VERTICAL, W, IntVar, Label, LabelFrame, PhotoImage, Radiobutton, StringVar
 from tkinter import ttk
 from tkcalendar import *
 
@@ -12,7 +12,7 @@ class CentroTrabajoView:
     def __init__(self, root, id_empresa):
         super().__init__()
         self.root = root
-        self.id_e = id_empresa
+        self.id_empresa = id_empresa
 
         wind_width  = 898#900
         wind_height = 410#390
@@ -38,7 +38,8 @@ class CentroTrabajoView:
         self.root.protocol('WM_DELETE_WINDOW', self.on_closing)
 
         self.create_widgets()
-
+        
+        self.disabled_entry()
 
     def create_icon(self):
         self.img1 = self.image_button(PhotoImage(file='assets/images/button/draft_FILL0_wght400_GRAD0_opsz48.png'))
@@ -162,14 +163,14 @@ class CentroTrabajoView:
         self.var7 = StringVar()
         self.var8 = StringVar()
 
-        self.regPtrl_entry = UpperEntry(self.lbl1)
+        self.regPtrl_entry = UpperEntry(self.lbl1, textvariable=self.var1)
         self.fIniAct_entry = DateEntry(self.lbl2, selectmode='day')
-        self.contPub_entry = UpperEntry(self.lbl3)
+        self.contPub_entry = UpperEntry(self.lbl3, textvariable=self.var3)
 
         self.fIniAud_entry = DateEntry(self.lbl5, selectmode='day')
         self.fFinAud_entry = DateEntry(self.lbl6, selectmode='day')
         self.fElabDi_entry = DateEntry(self.lbl7, selectmode='day')
-        self.actPrin_entry = UpperEntry(self.lbl8)
+        self.actPrin_entry = UpperEntry(self.lbl8, textvariable=self.var8)
 
         a1 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
         a2 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
@@ -309,12 +310,18 @@ class CentroTrabajoView:
         self.lbl19 = Label(self.l3, bg=self.color_normal)
         self.lbl20 = Label(self.l3, bg=self.color_normal)
         self.lbl21 = Label(self.l3, bg=self.color_normal)
+        
+        self.var17 = StringVar()
+        self.var18 = StringVar()
+        self.var19 = StringVar()
+        self.var20 = StringVar()
+        self.var21 = StringVar()
 
-        self.nomRepL_entry = UpperEntry(self.lbl17, textvariable=self.var9)
-        self.puesto_entry = UpperEntry(self.lbl18, textvariable=self.var10)
-        self.noEscPodNot_entry = UpperEntry(self.lbl19, textvariable=self.var11)
-        self.fCertPNot_entry = UpperEntry(self.lbl20, textvariable=self.var12)
-        self.noNot_entry = ttk.Entry(self.lbl21, textvariable=self.var13)
+        self.nomRepL_entry = UpperEntry(self.lbl17, textvariable=self.var17)
+        self.puesto_entry = UpperEntry(self.lbl18, textvariable=self.var18)
+        self.noEscPodNot_entry = UpperEntry(self.lbl19, textvariable=self.var19)
+        self.fCertPNot_entry = UpperEntry(self.lbl20, textvariable=self.var20)
+        self.noNot_entry = ttk.Entry(self.lbl21, textvariable=self.var21)
 
         _label_17.grid(row=0, column=0, sticky=W, padx=2)
         _label_18.grid(row=2, column=0, sticky=W, padx=2)
@@ -336,7 +343,8 @@ class CentroTrabajoView:
 
 
     def configuracion_general(self):
-        opcion = IntVar()
+        self.opcion = IntVar()
+        self.opcion.set(1)
         
         _label_22 = Label(self.l4, text='Indique el formato que desee aplicar al No. de Trabajador del Centro', anchor='w')
         _label_23 = Label(self.l4, text='Longitud', anchor='w')
@@ -354,8 +362,8 @@ class CentroTrabajoView:
         self.lbl23 = Label(self.l4, bg=self.color_normal, width=24)
         self.lbl24 = Label(self.l4, bg=self.color_normal)   #, width=24
         
-        Radiobutton(label, text="Numérico", variable=opcion, value=1, ).pack(anchor=W)  #command=
-        Radiobutton(label, text="Alfanumérico", variable=opcion, value=2, ).pack(anchor=W)
+        self.radio_1 = Radiobutton(label, text="Numérico", variable=self.opcion, value=1, )
+        self.radio_2 = Radiobutton(label, text="Alfanumérico", variable=self.opcion, value=2, )
         self.long_entry = ttk.Entry(self.lbl22)
         self.nCenTrab_entry = UpperEntry(self.lbl24)
 
@@ -374,9 +382,76 @@ class CentroTrabajoView:
         a23.grid(row=2, column=5)
         a24.grid(row=4, column=3)
 
+        self.radio_1.pack(anchor=W)  #command=
+        self.radio_2.pack(anchor=W)
         self.long_entry.pack(fill='both')
         self.nCenTrab_entry.pack(fill='both')
 
 
     def configuracion_nomina(self):
         pass
+
+    def bloquear_formulario(self):
+        self.limpiar_formulario()
+        self.disabled_entry()
+        '''self._button_new()'''
+
+    def limpiar_formulario(self):
+        #self.limpiar_form_string()
+
+        self.regPtrl_entry.delete(0, END)
+        self.fIniAct_entry.delete(0, END)
+        self.contPub_entry.delete(0, END)
+        self.fIniAud_entry.delete(0, END)
+        self.fFinAud_entry.delete(0, END)
+        self.fElabDi_entry.delete(0, END)
+        self.actPrin_entry.delete(0, END)
+
+        self.calle_entry.delete(0, END)
+        self.num_entry.delete(0, END)
+        self.col_entry.delete(0, END)
+        self.mpio_entry.delete(0, END)
+        self.cp_entry.delete(0, END)
+        self.entFed_entry.delete(0, END)
+        self.pob_entry.delete(0, END)
+        self.tel_entry.delete(0, END)
+
+        self.nomRepL_entry.delete(0, END)
+        self.puesto_entry.delete(0, END)
+        self.noEscPodNot_entry.delete(0, END)
+        self.fCertPNot_entry.delete(0, END)
+        self.noNot_entry.delete(0, END)
+
+        '''self.radio_1.delete(0, END)
+        self.radio_2.delete(0, END)'''
+        self.long_entry.delete(0, END)
+        self.nCenTrab_entry.delete(0, END)
+
+    def disabled_entry(self):
+        self.regPtrl_entry.config(state='disabled')
+        self.fIniAct_entry.config(state='disabled')
+        self.contPub_entry.config(state='disabled')
+        self.fIniAud_entry.config(state='disabled')
+        self.fFinAud_entry.config(state='disabled')
+        self.fElabDi_entry.config(state='disabled')
+        self.actPrin_entry.config(state='disabled')
+
+        self.calle_entry.config(state='disabled')
+        self.num_entry.config(state='disabled')
+        self.col_entry.config(state='disabled')
+        self.mpio_entry.config(state='disabled')
+        self.cp_entry.config(state='disabled')
+        self.entFed_entry.config(state='disabled')
+        self.pob_entry.config(state='disabled')
+        self.tel_entry.config(state='disabled')
+
+        self.nomRepL_entry.config(state='disabled')
+        self.puesto_entry.config(state='disabled')
+        self.noEscPodNot_entry.config(state='disabled')
+        self.fCertPNot_entry.config(state='disabled')
+        self.noNot_entry.config(state='disabled')
+
+        self.radio_1.config(state='disabled')
+        self.radio_2.config(state='disabled')
+        self.long_entry.config(state='disabled')
+        self.nCenTrab_entry.config(state='disabled')

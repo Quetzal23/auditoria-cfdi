@@ -41,6 +41,11 @@ class ParametroModel():
         parameters = (calle, num, col, mpio, cp, entFed, pob, tel)
         self.db.run_query(query, parameters)
 
+    def capture_company_representative(self, rstatus, noPatrl):
+        query = 'INSERT INTO au_empresa_representante VALUES(NULL, NULL, NULL, NULL, NULL, NULL , ?, ?)'
+        parameters = (rstatus, noPatrl)
+        self.db.run_query(query, parameters)
+
     def get_company_general_data(self, rfc, noPatrl):
         query = 'SELECT * FROM au_empresa_datos_generales WHERE rfc_empresa=? AND no_reg_patrl_empresa=?'
         parameters = (rfc, noPatrl)
@@ -54,6 +59,13 @@ class ParametroModel():
         db_rows = self.db.run_query(query, parameters)
         row = db_rows.fetchall()
         return row
+        
+    def get_company_representative(self, noPatrl):
+        query = 'SELECT * FROM au_empresa_representante WHERE no_reg_patrl_empresa=?'
+        parameters = (noPatrl, )
+        db_rows = self.db.run_query(query, parameters)
+        row = db_rows.fetchall()
+        return row
 
     def get_company(self, id_datos, id_direccion):
         query = 'SELECT * FROM au_empresa WHERE au_empresa_datos_generales_id_datos=? AND au_empresa_direccion_id_direccion=?'
@@ -62,9 +74,9 @@ class ParametroModel():
         row = db_rows.fetchall()
         return row
 
-    def capture_company(self, id_dato, id_dir):
-        query = 'INSERT INTO au_empresa VALUES(NULL, ?, ?, NULL)'
-        parameters = (id_dato, id_dir)
+    def capture_company(self, id_dato, id_dir, id_rep):
+        query = 'INSERT INTO au_empresa VALUES(NULL, ?, ?, ?)'
+        parameters = (id_dato, id_dir, id_rep)
         self.db.run_query(query, parameters)
 
     def capture_mother_company(self, id_empresa):

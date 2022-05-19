@@ -83,7 +83,7 @@ class ParametroController:
 
     def _on_tree_select(self, a):
         self.view.bloquear_formulario()
-        self.view.limpiar_formulario()
+        #self.view.limpiar_formulario()
         
         curItem = self.view.treeview.focus()
         self.selected = self.view.treeview.item(curItem, 'text') # Obtener id de la empresa
@@ -107,17 +107,20 @@ class ParametroController:
 
     # Guardar empresa
     def add_empresa_matriz(self):
+        rstatus = 0
         self.model.capture_company_general_data(self.nomEmp, self.nomCorto, self.rfc, self.noPatrl, self.actPpal)
         self.model.capture_company_address(self.calle, self.num, self.col, self.mpio, self.cp, self.entFed, self.pob, self.tel)
+        self.model.capture_company_representative(rstatus, self.noPatrl)
 
         try:
             # Obtener id de los datos y form_direccion de la empresa
             id_datos_empresa = self.get_id_company_data()
             id_direc_empresa = self.get_id_company_address()
+            id_representante = self.get_id_company_representative()
             
             try:
                 # Llenar la tabla de empresas
-                self.model.capture_company(id_datos_empresa, id_direc_empresa)
+                self.model.capture_company(id_datos_empresa, id_direc_empresa, id_representante)
                 try:
                     # Obtener id de la empresa
                     db_row = self.model.get_company(id_datos_empresa, id_direc_empresa)
@@ -156,6 +159,13 @@ class ParametroController:
         for row in db_row:
             id = row[0]
             return id
+
+    # Obtener el id del representante legal
+    def get_id_company_representative(self):
+        db_row = self.model.get_company_representative(self.noPatrl)
+        for row in db_row:
+            id = row[0]
+            return id
     
 
     # Llenar treeview de las empresas matriz
@@ -165,7 +175,7 @@ class ParametroController:
             self.view.treeview.delete(element)
 
         matriz = self.model.get_mother_company()
-        for row in matriz:  # Obtener id de empresa matriz
+        for row in matriz:  # Obtener id de empresa en la tabla empresa matriz
             id_emp = row[1]
             db_row = self.model.get_company_by_id(id_emp)
             
