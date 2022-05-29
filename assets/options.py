@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk 
 
+from tkcalendar import DateEntry
 from datetime import datetime
 import time
 
@@ -15,6 +16,16 @@ class Window_Center(Frame):
         y_wind = self.wind.winfo_screenheight() // 2 - wind_height // 2
         position = str(wind_width) + "x" + str(wind_height) + "+" + str(x_wind) + "+" + str(y_wind)
         return position
+
+class CustomDateEntry(DateEntry):
+    def _select(self, event=None):
+        date = self._calendar.selection_get()
+        if date is not None:
+            self._set_text(date.strftime('%d/%m/%Y'))
+            self.event_generate('<<DateEntrySelected>>')
+        self._top_cal.withdraw()
+        if 'readonly' not in self.state():
+            self.focus_set()
         
 class UpperEntry(ttk.Entry):
     def __init__(self, parent, *args, **kwargs):

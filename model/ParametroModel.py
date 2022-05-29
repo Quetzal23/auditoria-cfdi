@@ -41,9 +41,9 @@ class ParametroModel():
         parameters = (calle, num, col, mpio, cp, entFed, pob, tel)
         self.db.run_query(query, parameters)
 
-    def capture_company_representative(self, rstatus, noPatrl):
-        query = 'INSERT INTO au_empresa_representante VALUES(NULL, NULL, NULL, NULL, NULL, NULL , ?, ?)'
-        parameters = (rstatus, noPatrl)
+    def capture_company_representative(self, noPatrl):
+        query = 'INSERT INTO au_empresa_representante VALUES(NULL, NULL, NULL, NULL, NULL, NULL , ?)'
+        parameters = (noPatrl, )
         self.db.run_query(query, parameters)
 
     def get_company_general_data(self, rfc, noPatrl):
@@ -93,5 +93,3 @@ class ParametroModel():
         query = 'UPDATE au_empresa_direccion SET calle_empresa=?, no_empresa=?, col_empresa=?, mpio_empresa=?, cp_empresa=?, ent_fed_empresa=?, pob_empresa=?, tels_empresa=? WHERE id_empresa_direccion=?'
         parameters = (calle, num, col, mpio, cp, entFed, pob, tel, id)
         self.db.run_query(query, parameters)
-
-    

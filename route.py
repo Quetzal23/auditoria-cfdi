@@ -42,3 +42,4 @@ def centro_trabajo(id_empresa):
     view = CentroTrabajoView(root, id_empresa)
     model = CentroTrabajoModel()
     controller = CentroTrabajoController(model, view)
+    #root.mainloop()

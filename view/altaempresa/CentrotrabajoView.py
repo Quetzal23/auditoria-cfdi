@@ -1,8 +1,11 @@
 from tkinter import CENTER, END, EW, HORIZONTAL, LEFT, NSEW, RIGHT, VERTICAL, W, IntVar, Label, LabelFrame, PhotoImage, Radiobutton, StringVar
 from tkinter import ttk
+import tkinter as tk
 from tkcalendar import *
 
-from assets.options import Window_Center, UpperEntry
+from datetime import date
+
+from assets.options import CustomDateEntry, Window_Center, UpperEntry
 from assets.styles import Style
 
 class CentroTrabajoView:
@@ -70,7 +73,7 @@ class CentroTrabajoView:
         self.btn_save = ttk.Button(frame_top, text='Save', image=self.img2,)
         self.btn_edit = ttk.Button(frame_top, text='Edit', image=self.img3)
         self.btn_delete = ttk.Button(frame_top, text='Delete', image=self.img4)
-        self.btn_center = ttk.Button(frame_top, text='Print', image=self.img5)
+        self.btn_print = ttk.Button(frame_top, text='Print', image=self.img5)
         self.btn_exit = ttk.Button(frame_top, text='Exit', image=self.img6, command=self.on_closing)
         self.msg_label = Label(frame_top, text='', width=50, anchor='e')
 
@@ -78,7 +81,7 @@ class CentroTrabajoView:
         self.btn_save.pack(side=LEFT, padx=4, pady=4,)
         self.btn_edit.pack(side=LEFT, padx=4, pady=4,)
         self.btn_delete.pack(side=LEFT, padx=4, pady=4,)
-        self.btn_center.pack(side=LEFT, padx=4, pady=4,)
+        self.btn_print.pack(side=LEFT, padx=4, pady=4,)
         self.btn_exit.pack(side=RIGHT, padx=4, pady=4,)
         self.msg_label.pack(side=RIGHT, padx=4, pady=4,)
 
@@ -155,22 +158,29 @@ class CentroTrabajoView:
         self.lbl8 = Label(self.l1, bg=self.color_normal)
 
         self.var1 = StringVar()
-        self.var2 = StringVar()
+        #self.var2 = StringVar()
         self.var3 = StringVar()
-        self.var4 = StringVar()
-        self.var5 = StringVar()
-        self.var6 = StringVar()
-        self.var7 = StringVar()
+        #self.var4 = StringVar()
+        #self.var5 = StringVar()
+        #self.var6 = StringVar()
+        #self.var7 = StringVar()
         self.var8 = StringVar()
 
         self.regPtrl_entry = UpperEntry(self.lbl1, textvariable=self.var1)
-        self.fIniAct_entry = DateEntry(self.lbl2, selectmode='day')
+        self.fIniAct_entry = CustomDateEntry(self.lbl2, selectmode='day')
         self.contPub_entry = UpperEntry(self.lbl3, textvariable=self.var3)
 
-        self.fIniAud_entry = DateEntry(self.lbl5, selectmode='day')
-        self.fFinAud_entry = DateEntry(self.lbl6, selectmode='day')
-        self.fElabDi_entry = DateEntry(self.lbl7, selectmode='day')
+        self.fIniAud_entry = CustomDateEntry(self.lbl5, selectmode='day')
+        self.fFinAud_entry = CustomDateEntry(self.lbl6, selectmode='day')
+        self.fElabDi_entry = CustomDateEntry(self.lbl7, selectmode='day')
         self.actPrin_entry = UpperEntry(self.lbl8, textvariable=self.var8)
+
+        
+        self.fIniAct_entry._set_text(self.fIniAct_entry._date.strftime('%d/%m/%Y'))
+
+        self.fIniAud_entry._set_text(self.fIniAud_entry._date.strftime('%d/%m/%Y'))
+        self.fFinAud_entry._set_text(self.fFinAud_entry._date.strftime('%d/%m/%Y'))
+        self.fElabDi_entry._set_text(self.fElabDi_entry._date.strftime('%d/%m/%Y'))
 
         a1 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
         a2 = Label(self.l1, text='*', fg=self.color_danger, font=(self.font, 13, 'bold'))
@@ -206,13 +216,21 @@ class CentroTrabajoView:
         a6.grid(row=5, column=5)
 
         self.regPtrl_entry.pack(fill='both')
-        self.fIniAct_entry.pack(fill='both')
         self.contPub_entry.pack(fill='both')
+        self.actPrin_entry.pack(fill='both')
+        self.form_pack()
 
+    def form_pack(self):
+        self.fIniAct_entry.pack(fill='both')
         self.fIniAud_entry.pack(fill='both')
         self.fFinAud_entry.pack(fill='both')
         self.fElabDi_entry.pack(fill='both')
-        self.actPrin_entry.pack(fill='both')
+
+    def dateentry_forget(self):
+        self.fIniAct_entry.forget()
+        self.fIniAud_entry.forget()
+        self.fFinAud_entry.forget()
+        self.fElabDi_entry.forget()
 
 
     def direccion(self):
@@ -397,6 +415,27 @@ class CentroTrabajoView:
         '''self._button_new()'''
 
     def limpiar_formulario(self):
+        self.var1.set('')
+        #self.var2.set('')
+        self.var3.set('')
+        #self.var4.set('')
+        #self.var5.set('')
+        #self.var6.set('')
+        #self.var7.set('')
+        self.var8.set('')
+        self.var9.set('')
+        self.var10.set('')
+        self.var11.set('')
+        self.var12.set('')
+        self.var13.set('')
+        self.var14.set('')
+        self.var15.set('')
+        self.var16.set('')
+        self.var17.set('')
+        self.var18.set('')
+        self.var19.set('')
+        self.var20.set('')
+        self.var21.set('')
         #self.limpiar_form_string()
 
         self.regPtrl_entry.delete(0, END)
@@ -427,7 +466,33 @@ class CentroTrabajoView:
         self.long_entry.delete(0, END)
         self.nCenTrab_entry.delete(0, END)
 
+    def normal_entry(self):
+        self.regPtrl_entry.config(state='normal')
+        self.fIniAct_entry.config(state='normal')
+        self.contPub_entry.config(state='normal')
+        self.fIniAud_entry.config(state='normal')
+        self.fFinAud_entry.config(state='normal')
+        self.fElabDi_entry.config(state='normal')
+        self.actPrin_entry.config(state='normal')
+
+        self.calle_entry.config(state='normal')
+        self.num_entry.config(state='normal')
+        self.col_entry.config(state='normal')
+        self.mpio_entry.config(state='normal')
+        self.cp_entry.config(state='normal')
+        self.entFed_entry.config(state='normal')
+        self.pob_entry.config(state='normal')
+        self.tel_entry.config(state='normal')
+
+        self.nomRepL_entry.config(state='normal')
+        self.puesto_entry.config(state='normal')
+        self.noEscPodNot_entry.config(state='normal')
+        self.fCertPNot_entry.config(state='normal')
+        self.noNot_entry.config(state='normal')
+
     def disabled_entry(self):
+        self._button_new()
+        
         self.regPtrl_entry.config(state='disabled')
         self.fIniAct_entry.config(state='disabled')
         self.contPub_entry.config(state='disabled')
@@ -455,3 +520,144 @@ class CentroTrabajoView:
         self.radio_2.config(state='disabled')
         self.long_entry.config(state='disabled')
         self.nCenTrab_entry.config(state='disabled')
+
+    def formulario_completo(self):
+        self.lbl1.config(bg=self.color_normal)
+        self.lbl2.config(bg=self.color_normal)
+        self.lbl3.config(bg=self.color_normal)
+        #self.lbl4.config(bg=self.color_normal)
+        self.lbl5.config(bg=self.color_normal)
+        self.lbl6.config(bg=self.color_normal)
+        self.lbl7.config(bg=self.color_normal)
+        self.lbl8.config(bg=self.color_normal)
+
+        self.lbl9.config(bg=self.color_normal)
+        self.lbl10.config(bg=self.color_normal)
+        self.lbl11.config(bg=self.color_normal)
+        self.lbl12.config(bg=self.color_normal)
+        self.lbl13.config(bg=self.color_normal)
+        self.lbl14.config(bg=self.color_normal)
+        self.lbl15.config(bg=self.color_normal)
+        self.lbl16.config(bg=self.color_normal)
+
+        self.lbl17.config(bg=self.color_normal)
+        self.lbl18.config(bg=self.color_normal)
+        self.lbl19.config(bg=self.color_normal)
+        self.lbl20.config(bg=self.color_normal)
+        self.lbl21.config(bg=self.color_normal)
+
+    def formulario_incompleto(self):
+        if len(self.var1.get()) == 0:
+            self.lbl1.config(bg=self.color_danger)
+        else:
+            self.lbl1.config(bg=self.color_normal)
+        if len(self.var2.get()) == 0:
+            self.lbl2.config(bg=self.color_danger)
+        else:
+            self.lbl2.config(bg=self.color_normal)
+        if len(self.var3.get()) == 0:
+            self.lbl3.config(bg=self.color_danger)
+        else:
+            self.lbl3.config(bg=self.color_normal)
+        '''if len(self.var4.get()) == 0:
+            self.lbl4.config(bg=self.color_danger)
+        else:
+            self.lbl4.config(bg=self.color_normal)'''
+        if len(self.var5.get()) == 0:
+            self.lbl5.config(bg=self.color_danger)
+        else:
+            self.lbl5.config(bg=self.color_normal)
+        if len(self.var6.get()) == 0:
+            self.lbl6.config(bg=self.color_danger)
+        else:
+            self.lbl6.config(bg=self.color_normal)
+        if len(self.var7.get()) == 0:
+            self.lbl7.config(bg=self.color_danger)
+        else:
+            self.lbl7.config(bg=self.color_normal)
+        if len(self.var8.get()) == 0:
+            self.lbl8.config(bg=self.color_danger)
+        else:
+            self.lbl8.config(bg=self.color_normal)
+
+        if len(self.var9.get()) == 0:
+            self.lbl9.config(bg=self.color_danger)
+        else:
+            self.lbl9.config(bg=self.color_normal)
+        if len(self.var10.get()) == 0:
+            self.lbl10.config(bg=self.color_danger)
+        else:
+            self.lbl10.config(bg=self.color_normal)
+        if len(self.var11.get()) == 0:
+            self.lbl11.config(bg=self.color_danger)
+        else:
+            self.lbl11.config(bg=self.color_normal)
+        if len(self.var12.get()) == 0:
+            self.lbl12.config(bg=self.color_danger)
+        else:
+            self.lbl12.config(bg=self.color_normal)
+        if len(self.var13.get()) == 0:
+            self.lbl13.config(bg=self.color_danger)
+        else:
+            self.lbl13.config(bg=self.color_normal)
+        if len(self.var14.get()) == 0:
+            self.lbl14.config(bg=self.color_danger)
+        else:
+            self.lbl14.config(bg=self.color_normal)
+        if len(self.var15.get()) == 0:
+            self.lbl15.config(bg=self.color_danger)
+        else:
+            self.lbl15.config(bg=self.color_normal)
+        if len(self.var16.get()) == 0:
+            self.lbl16.config(bg=self.color_danger)
+        else:
+            self.lbl16.config(bg=self.color_normal)
+            
+        if len(self.var17.get()) == 0:
+            self.lbl17.config(bg=self.color_danger)
+        else:
+            self.lbl17.config(bg=self.color_normal)
+        if len(self.var18.get()) == 0:
+            self.lbl18.config(bg=self.color_danger)
+        else:
+            self.lbl18.config(bg=self.color_normal)
+        if len(self.var19.get()) == 0:
+            self.lbl19.config(bg=self.color_danger)
+        else:
+            self.lbl19.config(bg=self.color_normal)
+        if len(self.var20.get()) == 0:
+            self.lbl20.config(bg=self.color_danger)
+        else:
+            self.lbl20.config(bg=self.color_normal)
+        if len(self.var21.get()) == 0:
+            self.lbl21.config(bg=self.color_danger)
+        else:
+            self.lbl21.config(bg=self.color_normal)
+
+    def _select_company(self):
+        self.btn_new['state'] = tk.NORMAL
+        self.btn_save['state'] = tk.DISABLED
+        self.btn_edit['state'] = tk.NORMAL
+        self.btn_delete['state'] = tk.NORMAL
+        self.btn_print['state'] = tk.NORMAL
+
+    def _button_edit(self):
+        self.btn_new['state'] = tk.DISABLED
+        self.btn_save['state'] = tk.NORMAL
+        self.btn_edit['state'] = tk.DISABLED
+        self.btn_delete['state'] = tk.DISABLED
+        self.btn_print['state'] = tk.DISABLED
+
+    def _button_new(self):
+        self.btn_new['state'] = tk.NORMAL
+        self.btn_save['state'] = tk.DISABLED
+        self.btn_edit['state'] = tk.DISABLED
+        self.btn_delete['state'] = tk.DISABLED
+        self.btn_print['state'] = tk.DISABLED
+
+    def _button_save(self):
+        self.btn_new['state'] = tk.DISABLED
+        self.btn_save['state'] = tk.NORMAL
+        self.btn_edit['state'] = tk.DISABLED
+        self.btn_delete['state'] = tk.DISABLED
+        self.btn_print['state'] = tk.DISABLED

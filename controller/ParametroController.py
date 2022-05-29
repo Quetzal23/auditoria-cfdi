@@ -107,10 +107,9 @@ class ParametroController:
 
     # Guardar empresa
     def add_empresa_matriz(self):
-        rstatus = 0
         self.model.capture_company_general_data(self.nomEmp, self.nomCorto, self.rfc, self.noPatrl, self.actPpal)
         self.model.capture_company_address(self.calle, self.num, self.col, self.mpio, self.cp, self.entFed, self.pob, self.tel)
-        self.model.capture_company_representative(rstatus, self.noPatrl)
+        self.model.capture_company_representative(self.noPatrl)
 
         try:
             # Obtener id de los datos y form_direccion de la empresa
@@ -246,10 +245,10 @@ class ParametroController:
                     self.view.msg_label['text'] = 'Empresa actualizada correctamente'
                     self.view.msg_label['fg'] = self.color_success
                 except:
-                    self.view.msg_label['text'] = 'No se logro actualizar los datos generales'
+                    self.view.msg_label['text'] = 'No se logro actualizar la dirección'
                     self.view.msg_label['fg'] = self.color_danger
-                self.view.msg_label['text'] = 'Empresa actualizada correctamente'
-                self.view.msg_label['fg'] = self.color_success
+                '''self.view.msg_label['text'] = 'Empresa actualizada correctamente'
+                self.view.msg_label['fg'] = self.color_success'''
             except:
                 self.view.msg_label['text'] = 'No se logro actualizar los datos generales'
                 self.view.msg_label['fg'] = self.color_danger
