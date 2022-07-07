@@ -7,3 +7,4 @@ Junto a las librerias:
 - beautifulsoup4
 - xlrd
 - tkcalendar
+- lxml
